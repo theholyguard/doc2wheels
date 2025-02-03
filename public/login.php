@@ -1,5 +1,17 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Ne démarre la session que si elle n'est pas déjà active
+}
+
+
 require_once '../src/User.php';
+
+
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
