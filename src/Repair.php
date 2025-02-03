@@ -40,4 +40,9 @@ class Repair {
 
     // ✅ DELETE : Supprimer une demande de réparation
     public function deleteRepair($id) {
-        $sql = "DELETE FROM repairs WHERE 
+        $sql = "DELETE FROM repairs WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+}
+?>
