@@ -1,39 +1,30 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start();
 
+// ✅ Vérifie si une session est déjà active avant de la démarrer
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Ne démarre la session que si elle n'est pas déjà active
+    session_start();
 }
 
-
 require_once '../src/User.php';
-
-
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = new User();
     $email = $_POST['email'];
     $password = $_POST['password'];
-    
+
     $loggedInUser = $user->loginUser($email, $password);
 
     if ($loggedInUser) {
         $_SESSION['user_id'] = $loggedInUser['id'];
         $_SESSION['role'] = $loggedInUser['role'];
-
-        if ($loggedInUser['role'] === 'technician') {
-            header("Location: dashboard.php");
-        } else {
-            header("Location: index.php");
-        }
+        $_SESSION['success_message'] = "✅ Connexion réussie !";
+    
+        header("Location: " . ($loggedInUser['role'] === 'technician' ? "dashboard.php" : "index.php"));
         exit();
-    } else {
-        echo "Email ou mot de passe incorrect.";
     }
+    
 }
 ?>
 

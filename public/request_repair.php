@@ -1,7 +1,13 @@
 <?php
-require_once '../src/Repair.php';
-require '../public/auth.php';  // Vérification de connexion
+session_start(); // Démarre la session AVANT d’accéder à $_SESSION
+require 'auth.php';
 redirectIfNotLoggedIn();
+require_once '../src/Repair.php';
+
+require 'auth.php';
+  // Vérification de connexion
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $repair = new Repair();

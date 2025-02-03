@@ -52,11 +52,17 @@ class User {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
+        if (!$user) {
+            die("❌ L'utilisateur avec l'email $email n'existe pas en base !");
+        }
+    
         if ($user && password_verify($password, $user['password'])) {
             return $user;
         }
+    
         return false;
     }
+    
 }
 ?>
