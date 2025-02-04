@@ -175,4 +175,4 @@ psql -U postgres -d doc2wheels -f database/schema.sql
 ---
 
 ## Besoin d’aide ?
-Si vous avez un problème, contactez un membre du projet ou ouvrez une issue sur GitHub.
+bon chance.
