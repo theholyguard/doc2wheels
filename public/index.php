@@ -1,17 +1,21 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 session_start();
+
 if (isset($_SESSION['success_message'])) {
     echo "<p style='color: green;'>" . $_SESSION['success_message'] . "</p>";
     unset($_SESSION['success_message']); // Supprimer le message après affichage
+}
+
 print_r($_SESSION);
+
 if (isset($_SESSION['user_id'])) {
     echo "✅ Connecté en tant que " . $_SESSION['role'];
 } else {
     echo "❌ Vous n'êtes pas connecté.";
 }
-
 
 $title = "Accueil";
 ob_start();
