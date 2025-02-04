@@ -4,22 +4,27 @@ ini_set('display_errors', 1);
 
 session_start();
 
-if (isset($_SESSION['success_message'])) {
-    echo "<p style='color: green;'>" . $_SESSION['success_message'] . "</p>";
-    unset($_SESSION['success_message']); // Supprimer le message après affichage
-}
-
-print_r($_SESSION);
-
-if (isset($_SESSION['user_id'])) {
-    echo "✅ Connecté en tant que " . $_SESSION['role'];
-} else {
-    echo "❌ Vous n'êtes pas connecté.";
-}
-
 $title = "Accueil";
 ob_start();
 ?>
+
+<!-- ✅ Messages de succès et statut de connexion -->
+<div class="container mt-3">
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="alert alert-success text-center"><?= $_SESSION['success_message']; ?></div>
+        <?php unset($_SESSION['success_message']); // Supprimer après affichage ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="alert alert-primary text-center">
+            ✅ Connecté en tant que <strong><?= ucfirst($_SESSION['role']); ?></strong>
+        </div>
+    <?php else: ?>
+        <div class="alert alert-warning text-center">
+            ❌ Vous n'êtes pas connecté.
+        </div>
+    <?php endif; ?>
+</div>
 
 <header class="hero">
     <div class="container text-center text-white">
