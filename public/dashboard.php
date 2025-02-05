@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 
 session_start();
 require_once '../src/Repair.php';
+require_once '../src/Service.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -11,10 +12,16 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $repair = new Repair();
+$service = new Service();
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 
 $repairs = ($role === 'technician') ? $repair->getRepairs() : $repair->getUserRepairs($user_id);
+
+// Récupérer tous les services disponibles
+$allServices = $service->getAllServices();
+// Récupérer les services sélectionnés par le technicien
+$technicianServices = $service->getTechnicianServices($user_id);
 ?>
 
 <!DOCTYPE html>
@@ -44,19 +51,21 @@ $repairs = ($role === 'technician') ? $repair->getRepairs() : $repair->getUserRe
         <p class="text-center">Bienvenue, <?= ucfirst($role); ?>.</p>
 
         <?php if ($role === 'technician'): ?>
-            <!-- Formulaire d'ajout de service -->
+            <!-- ✅ Gestion des services proposés -->
             <div class="card p-4 mb-4">
-                <h4>Ajouter un service</h4>
-                <form method="POST" action="add_service.php">
-                    <div class="mb-3">
-                        <label class="form-label">Type de service</label>
-                        <input type="text" name="type_service" class="form-control" required>
+                <h4>Gérer mes services</h4>
+                <form method="POST" action="update_services.php">
+                    <input type="hidden" name="technician_id" value="<?= $user_id ?>">
+                    <div class="row">
+                        <?php foreach ($allServices as $s) : ?>
+                            <div class="col-md-4">
+                                <input type="checkbox" name="services[]" value="<?= $s['id'] ?>"
+                                    <?= in_array($s['id'], array_column($technicianServices, 'service_id')) ? 'checked' : '' ?>>
+                                <label><?= $s['name'] ?></label>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Lieu</label>
-                        <input type="text" name="location" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Ajouter</button>
+                    <button type="submit" class="btn btn-success mt-3">Mettre à jour</button>
                 </form>
             </div>
         <?php endif; ?>
