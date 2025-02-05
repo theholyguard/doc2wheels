@@ -9,13 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $role = $_POST['role']; // Récupérer le rôle choisi (client ou technicien)
 
-    if ($user->createUser($name, $email, $password)) {
-        $_SESSION['success_message'] = "✅ Inscription réussie ! Vous pouvez vous connecter.";
+    if ($user->createUser($name, $email, $password, $role)) {
+        $_SESSION['success_message'] = "Inscription réussie ! Vous pouvez vous connecter.";
         header("Location: login.php");
         exit();
     } else {
-        $error = "❌ Une erreur est survenue, veuillez réessayer.";
+        $error = "Une erreur est survenue, veuillez réessayer.";
     }
 }
 ?>
@@ -29,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body class="bg-light">
 
-    <!-- ✅ Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.php">Doc2Wheels</a>
@@ -67,6 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="mb-3">
                                 <label class="form-label">Mot de passe</label>
                                 <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rôle</label>
+                                <select name="role" class="form-select" required>
+                                    <option value="client">Client</option>
+                                    <option value="technician">Technicien</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-success w-100">S'inscrire</button>
                             <p class="mt-3 text-center"><a href="login.php">Déjà inscrit ? Se connecter</a></p>
