@@ -53,5 +53,21 @@ class Service {
         $stmt->execute([':service_id' => $service_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    public function getAllServicesGroupedByCategory() {
+    $sql = "SELECT category, id, name FROM services ORDER BY category, name";
+    $stmt = $this->pdo->query($sql);
+    $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $groupedServices = [];
+    foreach ($services as $service) {
+        $groupedServices[$service['category']][] = $service;
+    }
+
+    return $groupedServices;
+}
+
+    
 }
 ?>
