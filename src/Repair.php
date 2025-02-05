@@ -55,5 +55,16 @@ class Repair {
         ]);
     }
     
+    // ✅ Récupérer les demandes de réparation d'un utilisateur spécifique
+public function getUserRepairs($user_id) {
+    $sql = "SELECT repairs.*, users.name AS client_name 
+            FROM repairs 
+            JOIN users ON repairs.user_id = users.id
+            WHERE repairs.user_id = :user_id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':user_id' => $user_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
 ?>

@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 session_start();
 require_once '../src/Repair.php';
-require_once '../src/Service.php';
+require_once '../src/Services.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -40,7 +40,7 @@ $technicianServices = $service->getTechnicianServices($user_id);
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Déconnexion</a>
+                    <a class="nav-link" href="logout.php">Déconnexion</a>
                     </li>
                 </ul>
             </div>
