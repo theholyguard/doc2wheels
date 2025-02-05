@@ -1,9 +1,9 @@
 # Fichiers sensibles
-echo ".env" >> /var/www/html/Doc2Wheels/.gitignore
+.env
 
 # Fichiers temporaires
-*.log
-*.cache
+.log
+.cache
 
 # Dossiers spécifiques à l'environnement
 vendor/
