@@ -14,12 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($loggedInUser) {
         $_SESSION['user_id'] = $loggedInUser['id'];
         $_SESSION['role'] = $loggedInUser['role'];
-        $_SESSION['success_message'] = "✅ Connexion réussie !";
-        header("Location: " . ($loggedInUser['role'] === 'technician' ? "dashboard.php" : "index.php"));
+        $_SESSION['success_message'] = "Connexion réussie !";
+    
+        if ($_SESSION['role'] === 'technician') {
+            header("Location: dashboard.php"); // Redirige les techniciens vers le dashboard
+        } else {
+            header("Location: index.php"); // Redirige les clients vers l'accueil
+        }
         exit();
     } else {
-        $error = "❌ Email ou mot de passe incorrect.";
+        $error = "Email ou mot de passe incorrect.";
     }
+    
 }
 ?>
 

@@ -44,5 +44,16 @@ class Repair {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([':id' => $id]);
     }
+
+    public function addService($user_id, $type_service, $location) {
+        $sql = "INSERT INTO repairs (user_id, type_service, location, status) VALUES (:user_id, :type_service, :location, 'en attente')";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':user_id' => $user_id,
+            ':type_service' => $type_service,
+            ':location' => $location
+        ]);
+    }
+    
 }
 ?>

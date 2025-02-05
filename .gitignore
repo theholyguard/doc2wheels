@@ -1,0 +1,10 @@
+# Fichiers sensibles
+echo ".env" >> /var/www/html/Doc2Wheels/.gitignore
+
+# Fichiers temporaires
+*.log
+*.cache
+
+# Dossiers spécifiques à l'environnement
+vendor/
+node_modules/
