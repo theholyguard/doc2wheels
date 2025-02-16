@@ -78,5 +78,31 @@ class Service {
 
         return $groupedServices;
     }
+
+    public function searchServices($query, $location) {
+        $sql = "SELECT s.id, s.name, u.location 
+                FROM technician_services ts
+                JOIN services s ON ts.service_id = s.id
+                JOIN users u ON ts.technician_id = u.id
+                WHERE LOWER(s.name) LIKE LOWER(:query) 
+                AND LOWER(u.location) LIKE LOWER(:location)
+                ORDER BY u.location";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':query' => '%' . $query . '%',
+            ':location' => '%' . $location . '%'
+        ]);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function searchServiceSuggestions($query) {
+        $sql = "SELECT DISTINCT name FROM services WHERE LOWER(name) LIKE LOWER(:query) LIMIT 10";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':query' => '%' . $query . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 ?>

@@ -34,6 +34,54 @@ ob_start();
     </div>
 </header>
 
+<!-- ✅ Formulaire de recherche de services -->
+<section class="container my-5">
+    <h2 class="text-center">🔍 Trouvez un service près de chez vous</h2>
+
+    <form method="GET" action="search_results.php" class="row g-3 p-4 bg-white shadow rounded">
+        <div class="col-md-5">
+            <label class="form-label">Service</label>
+            <input type="text" id="service-search" name="query" class="form-control" placeholder="Ex: Vidange, Freinage, Électricité..." required list="services-list">
+            <datalist id="services-list">
+                <!-- ✅ Les suggestions seront insérées ici via AJAX -->
+            </datalist>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Localisation</label>
+            <input type="text" name="location" class="form-control" placeholder="Ville ou adresse..." required>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-warning w-100">Rechercher</button>
+        </div>
+    </form>
+</section>
+
+<!-- ✅ Script pour charger les suggestions -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let serviceInput = document.getElementById("service-search");
+    let datalist = document.getElementById("services-list");
+
+    serviceInput.addEventListener("input", function() {
+        let query = serviceInput.value;
+        if (query.length > 1) { // 🔹 Ne lance la recherche qu'après 2 lettres tapées
+            fetch("autocomplete.php?q=" + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                datalist.innerHTML = "";
+                data.forEach(service => {
+                    let option = document.createElement("option");
+                    option.value = service.name;
+                    datalist.appendChild(option);
+                });
+            });
+        }
+    });
+});
+</script>
+
+
+<!-- ✅ Section services -->
 <section class="container my-5">
     <h2 class="text-center">Nos services</h2>
     <div class="row">
