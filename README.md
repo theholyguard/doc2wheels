@@ -49,7 +49,7 @@ Dans PostgreSQL :
 CREATE DATABASE doc2wheels;
 \c doc2wheels;
 ```
-
+```
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -84,7 +84,6 @@ CREATE TABLE repairs (
 
 
 INSERT INTO services (name, category) VALUES
-    -- 🛠 Réparations générales
     ('Révision complète', 'Réparation générale'),
     ('Vidange moteur', 'Réparation générale'),
     ('Changement de courroie', 'Réparation générale'),
