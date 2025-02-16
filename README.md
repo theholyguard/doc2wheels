@@ -49,9 +49,84 @@ Dans PostgreSQL :
 CREATE DATABASE doc2wheels;
 \c doc2wheels;
 ```
-Importer le schéma SQL si disponible :
-```bash
-psql -U postgres -d doc2wheels -f database/schema.sql
+--  Table des utilisateurs (clients & techniciens)
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role VARCHAR(50) DEFAULT 'client',
+    location VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--  Table des services
+CREATE TABLE services (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    category VARCHAR(255) NOT NULL
+);
+
+-- Table des techniciens et leurs services
+CREATE TABLE technician_services (
+    id SERIAL PRIMARY KEY,
+    technician_id INT REFERENCES users(id) ON DELETE CASCADE,
+    service_id INT REFERENCES services(id) ON DELETE CASCADE
+);
+
+-- Table des demandes de réparation
+CREATE TABLE repairs (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    type_service VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    status VARCHAR(50) DEFAULT 'en attente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--  Ajouter TOUS les services disponibles
+INSERT INTO services (name, category) VALUES
+    -- 🛠 Réparations générales
+    ('Révision complète', 'Réparation générale'),
+    ('Vidange moteur', 'Réparation générale'),
+    ('Changement de courroie', 'Réparation générale'),
+    ('Réparation fuite d’huile', 'Réparation générale'),
+    ('Réparation système d’embrayage', 'Réparation générale'),
+
+    -- 🔥 Moteur & Performances
+    ('Réparation moteur', 'Moteur & Performances'),
+    ('Nettoyage carburateur', 'Moteur & Performances'),
+    ('Changement bougies d’allumage', 'Moteur & Performances'),
+    ('Réglage injection', 'Moteur & Performances'),
+
+    -- ⚙️ Freinage
+    ('Remplacement plaquettes de frein', 'Freinage'),
+    ('Purge du liquide de frein', 'Freinage'),
+    ('Remplacement disque de frein', 'Freinage'),
+
+    -- 🚲 Pneus & Roues
+    ('Remplacement pneu avant/arrière', 'Pneus & Roues'),
+    ('Équilibrage des roues', 'Pneus & Roues'),
+    ('Réparation crevaison', 'Pneus & Roues'),
+
+    -- 💡 Électricité
+    ('Remplacement batterie', 'Électricité'),
+    ('Réparation éclairage', 'Électricité'),
+    ('Installation alarme antivol', 'Électricité'),
+    ('Diagnostic panne électrique', 'Électricité'),
+
+    -- 🔧 Suspension & Châssis
+    ('Réglage amortisseurs', 'Suspension & Châssis'),
+    ('Graissage & entretien fourche', 'Suspension & Châssis'),
+
+    -- 🔄 Transmission
+    ('Changement chaîne & pignons', 'Transmission'),
+    ('Réglage tension chaîne', 'Transmission'),
+
+    -- 🚨 Urgences & Dépannages
+    ('Remorquage moto', 'Urgence & Dépannage'),
+    ('Réparation moto après accident', 'Urgence & Dépannage');
+
 ```
 
 ---
