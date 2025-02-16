@@ -49,7 +49,7 @@ Dans PostgreSQL :
 CREATE DATABASE doc2wheels;
 \c doc2wheels;
 ```
---  Table des utilisateurs (clients & techniciens)
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -60,21 +60,19 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---  Table des services
 CREATE TABLE services (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     category VARCHAR(255) NOT NULL
 );
 
--- Table des techniciens et leurs services
+
 CREATE TABLE technician_services (
     id SERIAL PRIMARY KEY,
     technician_id INT REFERENCES users(id) ON DELETE CASCADE,
     service_id INT REFERENCES services(id) ON DELETE CASCADE
 );
 
--- Table des demandes de réparation
 CREATE TABLE repairs (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
@@ -84,7 +82,7 @@ CREATE TABLE repairs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---  Ajouter TOUS les services disponibles
+
 INSERT INTO services (name, category) VALUES
     -- 🛠 Réparations générales
     ('Révision complète', 'Réparation générale'),
@@ -93,37 +91,32 @@ INSERT INTO services (name, category) VALUES
     ('Réparation fuite d’huile', 'Réparation générale'),
     ('Réparation système d’embrayage', 'Réparation générale'),
 
-    -- 🔥 Moteur & Performances
+
     ('Réparation moteur', 'Moteur & Performances'),
     ('Nettoyage carburateur', 'Moteur & Performances'),
     ('Changement bougies d’allumage', 'Moteur & Performances'),
     ('Réglage injection', 'Moteur & Performances'),
 
-    -- ⚙️ Freinage
+
     ('Remplacement plaquettes de frein', 'Freinage'),
     ('Purge du liquide de frein', 'Freinage'),
     ('Remplacement disque de frein', 'Freinage'),
 
-    -- 🚲 Pneus & Roues
     ('Remplacement pneu avant/arrière', 'Pneus & Roues'),
     ('Équilibrage des roues', 'Pneus & Roues'),
     ('Réparation crevaison', 'Pneus & Roues'),
 
-    -- 💡 Électricité
     ('Remplacement batterie', 'Électricité'),
     ('Réparation éclairage', 'Électricité'),
     ('Installation alarme antivol', 'Électricité'),
     ('Diagnostic panne électrique', 'Électricité'),
 
-    -- 🔧 Suspension & Châssis
     ('Réglage amortisseurs', 'Suspension & Châssis'),
     ('Graissage & entretien fourche', 'Suspension & Châssis'),
 
-    -- 🔄 Transmission
     ('Changement chaîne & pignons', 'Transmission'),
     ('Réglage tension chaîne', 'Transmission'),
 
-    -- 🚨 Urgences & Dépannages
     ('Remorquage moto', 'Urgence & Dépannage'),
     ('Réparation moto après accident', 'Urgence & Dépannage');
 
