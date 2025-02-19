@@ -1,29 +1,3 @@
-<?php
-session_start(); // Démarre la session
-require 'auth.php';
-redirectIfNotLoggedIn();
-require_once '../src/Repair.php';
-require_once '../src/Service.php';
-
-$repair = new Repair();
-$service = new Service();
-$user_id = $_SESSION['user_id'];
-$allServicesByCategory = $service->getAllServicesGroupedByCategory();
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $type_service = $_POST['type_service'];
-    $location = $_POST['location'];
-
-    if ($repair->createRepair($user_id, $type_service, $location)) {
-        $_SESSION['success_message'] = "Votre demande a bien été envoyée !";
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        $error = "Une erreur est survenue lors de l'envoi de la demande.";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>

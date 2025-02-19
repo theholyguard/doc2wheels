@@ -18,8 +18,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="login.php">Connexion</a></li>
-                <li class="nav-item"><a class="nav-link" href="register.php">Inscription</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item"><a class="nav-link" href="dashboard">Utilisateur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout">Déconnexion</a></li>
+                <?php else: ?>
+                    <li class="nav-item"><a class="nav-link" href="login">Connexion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register">Inscription</a></li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

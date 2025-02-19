@@ -1,10 +1,16 @@
 <?php
+
+namespace App\Entities;
+
+use PDO;
+use PDOException;
+
 class Database {
     private static $instance = null;
     private $pdo;
 
     private function __construct() {
-        $env = parse_ini_file(__DIR__ . '/../.env', true);
+        $env = parse_ini_file(__DIR__ . '/../../.env', true);
 
         if (!$env) {
             die("❌ Fichier .env introuvable ou illisible !");

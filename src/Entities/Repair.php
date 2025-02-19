@@ -1,5 +1,8 @@
 <?php
-require_once 'Database.php';
+
+namespace App\Entities;
+
+use PDO;
 
 class Repair {
     private $pdo;
@@ -29,12 +32,12 @@ class Repair {
     }
 
     // ✅ UPDATE : Modifier le statut d'une réparation
-    public function updateRepairStatus($id, $status) {
-        $sql = "UPDATE repairs SET status = :status WHERE id = :id";
+    public function updateRepairStatus($repair_id, $status) {
+        $sql = "UPDATE repairs SET status = :status WHERE id = :repair_id";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':status' => $status,
-            ':id' => $id
+            ':repair_id' => $repair_id
         ]);
     }
 

@@ -1,30 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-session_start();
-require_once '../src/Repair.php';
-require_once '../src/Services.php';
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-$repair = new Repair();
-$service = new Service();
-$user_id = $_SESSION['user_id'];
-$role = $_SESSION['role'];
-
-$repairs = ($role === 'technician') ? $repair->getRepairs() : $repair->getUserRepairs($user_id);
-
-// Récupérer tous les services disponibles, triés par catégorie
-$allServicesByCategory = $service->getAllServicesGroupedByCategory();
-
-// Récupérer les services sélectionnés par le technicien
-$technicianServices = $service->getTechnicianServices($user_id);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -36,12 +9,16 @@ $technicianServices = $service->getTechnicianServices($user_id);
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">Doc2Wheels</a>
+            <a class="navbar-brand" href="/">Doc2Wheels</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Déconnexion</a>
-                    </li>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard">Utilisateur</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Déconnexion</a></li>
+                    <?php else: ?>
+                        <li class="nav-item"><a class="nav-link" href="/login">Connexion</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Inscription</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -71,12 +48,12 @@ $technicianServices = $service->getTechnicianServices($user_id);
 
                                     <!-- Boutons Accepter / Refuser -->
                                     <?php if ($role === 'technician' && $repair['status'] === 'en attente'): ?>
-                                        <form method="POST" action="update_repair.php" class="d-inline">
+                                        <form method="POST" action="/update_repair" class="d-inline">
                                             <input type="hidden" name="repair_id" value="<?= $repair['id']; ?>">
                                             <input type="hidden" name="status" value="en cours">
                                             <button type="submit" class="btn btn-success btn-sm">✅ Accepter</button>
                                         </form>
-                                        <form method="POST" action="update_repair.php" class="d-inline">
+                                        <form method="POST" action="/update_repair" class="d-inline">
                                             <input type="hidden" name="repair_id" value="<?= $repair['id']; ?>">
                                             <input type="hidden" name="status" value="refusé">
                                             <button type="submit" class="btn btn-danger btn-sm">❌ Refuser</button>
@@ -92,31 +69,31 @@ $technicianServices = $service->getTechnicianServices($user_id);
 
         <!-- ✅ Gestion des services proposés par le technicien -->
         <?php if ($role === 'technician'): ?>
-    <div class="card p-4 mb-4">
-        <h4 class="mb-3">🛠️ Mes services proposés</h4>
-        <form method="POST" action="update_services.php">
-            <input type="hidden" name="technician_id" value="<?= $user_id ?>">
+            <div class="card p-4 mb-4">
+                <h4 class="mb-3">🛠️ Mes services proposés</h4>
+                <form method="POST" action="/update_services">
+                    <input type="hidden" name="technician_id" value="<?= $user_id ?>">
 
-            <?php foreach ($allServicesByCategory as $category => $services): ?>
-                <h5 class="mt-3 text-primary"><?= htmlspecialchars($category); ?></h5>
-                <div class="row">
-                    <?php foreach ($services as $s) : ?>
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="services[]" value="<?= $s['id'] ?>"
-                                    <?= in_array($s['id'], array_column($technicianServices, 'service_id')) ? 'checked' : '' ?>>
-                                <label class="form-check-label"><?= htmlspecialchars($s['name']); ?></label>
-                            </div>
+                    <?php foreach ($allServicesByCategory as $category => $services): ?>
+                        <h5 class="mt-3 text-primary"><?= htmlspecialchars($category); ?></h5>
+                        <div class="row">
+                            <?php foreach ($services as $s) : ?>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="services[]" value="<?= $s['id'] ?>"
+                                            <?= in_array($s['id'], array_column($technicianServices, 'service_id')) ? 'checked' : '' ?>>
+                                        <label class="form-check-label"><?= htmlspecialchars($s['name']); ?></label>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
+                        <hr>
                     <?php endforeach; ?>
-                </div>
-                <hr>
-            <?php endforeach; ?>
 
-            <button type="submit" class="btn btn-primary mt-3">💾 Sauvegarder</button>
-        </form>
-    </div>
-<?php endif; ?>
+                    <button type="submit" class="btn btn-primary mt-3">💾 Sauvegarder</button>
+                </form>
+            </div>
+        <?php endif; ?>
 
     </div>
 

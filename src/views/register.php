@@ -1,26 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
-require_once '../src/User.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user = new User();
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $role = $_POST['role']; // Récupérer le rôle choisi (client ou technicien)
-
-    if ($user->createUser($name, $email, $password, $role)) {
-        $_SESSION['success_message'] = "Inscription réussie ! Vous pouvez vous connecter.";
-        header("Location: login.php");
-        exit();
-    } else {
-        $error = "Une erreur est survenue, veuillez réessayer.";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -32,14 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.php">Doc2Wheels</a>
+            <a class="navbar-brand fw-bold" href="/">Doc2Wheels</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Déjà inscrit ?</a>
+                        <a class="nav-link" href="login">Déjà inscrit ?</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Annuler</a>
+                        <a class="nav-link" href="/">Annuler</a>
                     </li>
                 </ul>
             </div>

@@ -1,25 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-session_start();
-require_once '../src/Services.php';
-
-$service = new Service();
-
-// Récupérer la requête utilisateur
-$query = isset($_GET['query']) ? trim($_GET['query']) : '';
-$location = isset($_GET['location']) ? trim($_GET['location']) : '';
-
-$results = [];
-
-if (!empty($query) && !empty($location)) {
-    // Rechercher les services correspondants
-    $results = $service->searchServices($query, $location);
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>

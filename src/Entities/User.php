@@ -1,5 +1,8 @@
 <?php
-require_once 'Database.php';
+
+namespace App\Entities;
+
+use PDO;
 
 class User {
     private $pdo;
