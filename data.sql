@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS repairs;
 DROP TABLE IF EXISTS services;
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS vehicle_categories;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -24,7 +25,8 @@ CREATE TABLE addresses (
 
 CREATE TABLE services (
     id SERIAL PRIMARY KEY,
-    category VARCHAR(255) NOT NULL
+    category VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE technician_services (
@@ -33,17 +35,38 @@ CREATE TABLE technician_services (
     service_id INT REFERENCES services(id) ON DELETE CASCADE
 );
 
+
+CREATE TABLE vehicle_categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
 CREATE TABLE repairs (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     type_service VARCHAR(255) NOT NULL,
     address_id INT REFERENCES addresses(id) ON DELETE CASCADE,
     technician_id INT REFERENCES users(id) ON DELETE CASCADE,
+    vehicle_category_id INT REFERENCES vehicle_categories(id) ON DELETE CASCADE,
+    price DECIMAL(10, 2) NOT NULL,
+    message TEXT,
     status VARCHAR(50) DEFAULT 'en attente',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO services (category) VALUES
-    ('Dépannage'),
-    ('Réparation'),
-    ('Entretien');
+
+
+INSERT INTO services (category, price) VALUES
+    ('Dépannage', 100.00),
+    ('Réparation', 70.00),
+    ('Entretien', 40.00);
+
+INSERT INTO vehicle_categories (name, price) VALUES
+    ('Sportive', 50.00),
+    ('Roadster', 40.00),
+    ('Scooter', 30.00),
+    ('Trail', 20.00);
+
+INSERT INTO users (name, email, password, role) VALUES
+    ('Noan', 'a@b.c', 'test1234', 'technician');

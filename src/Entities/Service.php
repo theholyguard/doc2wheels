@@ -103,7 +103,7 @@ class Service {
     }
 
     public function findTechniciansByCategory($category) {
-        $sql = "SELECT u.id AS technician_id, u.name AS technician_name, a.address, a.city, a.postal_code
+        $sql = "SELECT u.id AS technician_id, u.name AS technician_name, a.id AS address_id, a.address, a.city, a.postal_code
                 FROM technician_services ts
                 JOIN services s ON ts.service_id = s.id
                 JOIN users u ON ts.technician_id = u.id

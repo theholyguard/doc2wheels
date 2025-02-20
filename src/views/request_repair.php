@@ -10,7 +10,6 @@
     <div class="container my-5">
         <h2 class="text-center">📩 Demande de Réparation</h2>
 
-
         <?php if (isset($error)): ?>
             <div class="alert alert-danger text-center"><?= $error ?></div>
         <?php endif; ?>
@@ -38,6 +37,21 @@
                     <?php endforeach; ?>
                 </select>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Catégorie de moto :</label>
+                <select name="vehicle_category_id" class="form-select" required>
+                    <option value="">-- Sélectionnez une catégorie de moto --</option>
+                    <?php foreach ($vehicleCategories as $category): ?>
+                        <option value="<?= $category['id']; ?>">
+                            <?= htmlspecialchars($category['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Message :</label>
+                <textarea name="message" class="form-control" rows="3"></textarea>
+            </div>
             <button type="submit" class="btn btn-success w-100">Rechercher Techniciens</button>
         </form>
 
@@ -45,8 +59,8 @@
             <h3 class="text-center mt-5">Techniciens disponibles</h3>
             <div class="list-group">
                 <?php foreach ($technicians as $technician): ?>
-                    <a href="/request_repair?technician_id=<?= $technician['technician_id']; ?>&category=<?= htmlspecialchars($selectedCategory); ?>&address_id=<?= htmlspecialchars($selectedAddressId); ?>" class="list-group-item list-group-item-action">
-                        <?= htmlspecialchars($technician['technician_name']); ?> - <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?>
+                    <a href="/request_repair?technician_id=<?= $technician['technician_id']; ?>&category=<?= htmlspecialchars($selectedCategory); ?>&address_id=<?= htmlspecialchars($selectedAddressId); ?>&vehicle_category_id=<?= htmlspecialchars($selectedVehicleCategoryId); ?>&message=<?= htmlspecialchars($message); ?>" class="list-group-item list-group-item-action">
+                        <?= htmlspecialchars($technician['technician_name']); ?> - <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?> - Prix : <?= htmlspecialchars($technician['price']); ?> € (<?= $technician['discount'] * 100; ?>% appliqués lors de la sélection)
                     </a>
                 <?php endforeach; ?>
             </div>
