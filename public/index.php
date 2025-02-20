@@ -32,7 +32,11 @@ $router->get('/search_results', [SearchController::class, 'searchResults']);
 $router->post('/add_address', [DashboardController::class, 'addAddress']);
 $router->post('/delete_address', [DashboardController::class, 'deleteAddress']);
 
-$router->get('/admin/performance', [AdminController::class, 'viewStatistics']);
+$router->get('/admin/performance', [AdminController::class, 'viewStatisticsPerformance']);
+$router->get('/admin/user', [AdminController::class, 'viewStatisticsUser']);
+$router->get('/admin/repair', [AdminController::class, 'viewStatisticsRepair']);
+$router->get('/admin/history', [AdminController::class, 'viewStatisticsHistory']);
+$router->get('/admin/review', [AdminController::class, 'viewStatisticsReview']);
 
 $response = $router->route($request);
 

@@ -1,0 +1,1513 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
+@layer base, components, utilities;
+
+@layer base {
+
+  /*! modern-normalize v3.0.1 | MIT License | https://github.com/sindresorhus/modern-normalize */
+  /*
+  Document
+  ========
+  */
+  /**
+  Use a better box model (opinionated).
+  */
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3) */
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    line-height: 1.15;
+    /* 1. Correct the line height in all browsers. */
+    -webkit-text-size-adjust: 100%;
+    /* 2. Prevent adjustments of font size after orientation changes in iOS. */
+    tab-size: 4;
+    /* 3. Use a more readable tab size (opinionated). */
+  }
+
+  /*
+  Sections
+  ========
+  */
+  body {
+    margin: 0;
+    /* Remove the margin in all browsers. */
+  }
+
+  /*
+  Text-level semantics
+  ====================
+  */
+  /**
+  Add the correct font weight in Chrome and Safari.
+  */
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  /**
+  1. Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3)
+  2. Correct the odd 'em' font sizing in all browsers.
+  */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    /* 1 */
+    font-size: 1em;
+    /* 2 */
+  }
+
+  /**
+  Add the correct font size in all browsers.
+  */
+  small {
+    font-size: 80%;
+  }
+
+  /**
+  Prevent 'sub' and 'sup' elements from affecting the line height in all browsers.
+  */
+  sub,
+  sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+
+  sub {
+    bottom: -0.25em;
+  }
+
+  sup {
+    top: -0.5em;
+  }
+
+  /*
+  Tabular data
+  ============
+  */
+  /**
+  Correct table border color inheritance in Chrome and Safari. (https://issues.chromium.org/issues/40615503, https://bugs.webkit.org/show_bug.cgi?id=195016)
+  */
+  table {
+    border-color: currentcolor;
+  }
+
+  /*
+  Forms
+  =====
+  */
+  /**
+  1. Change the font styles in all browsers.
+  2. Remove the margin in Firefox and Safari.
+  */
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
+    /* 1 */
+    font-size: 100%;
+    /* 1 */
+    line-height: 1.15;
+    /* 1 */
+    margin: 0;
+    /* 2 */
+  }
+
+  /**
+  Correct the inability to style clickable types in iOS and Safari.
+  */
+  button,
+  [type=button],
+  [type=reset],
+  [type=submit] {
+    -webkit-appearance: button;
+  }
+
+  /**
+  Remove the padding so developers are not caught out when they zero out 'fieldset' elements in all browsers.
+  */
+  legend {
+    padding: 0;
+  }
+
+  /**
+  Add the correct vertical alignment in Chrome and Firefox.
+  */
+  progress {
+    vertical-align: baseline;
+  }
+
+  /**
+  Correct the cursor style of increment and decrement buttons in Safari.
+  */
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    height: auto;
+  }
+
+  /**
+  1. Correct the odd appearance in Chrome and Safari.
+  2. Correct the outline style in Safari.
+  */
+  [type=search] {
+    -webkit-appearance: textfield;
+    /* 1 */
+    outline-offset: -2px;
+    /* 2 */
+  }
+
+  /**
+  Remove the inner padding in Chrome and Safari on macOS.
+  */
+  ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  /**
+  1. Correct the inability to style clickable types in iOS and Safari.
+  2. Change font properties to 'inherit' in Safari.
+  */
+  ::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    /* 1 */
+    font: inherit;
+    /* 2 */
+  }
+
+  /*
+  Interactive
+  ===========
+  */
+  /*
+  Add the correct display in Chrome and Safari.
+  */
+  summary {
+    display: list-item;
+  }
+}
+
+@layer base {
+  :root {
+    --black: #000;
+    --black-hover: rgb(25.5, 25.5, 25.5);
+    --white: #fff;
+    --white-hover: white;
+    --grey: #8f8e8e;
+    --grey-hover: rgb(154.2, 153.3, 153.3);
+    --l-grey: #ececec;
+    --l-grey-hover: rgb(237.9, 237.9, 237.9);
+    --d-grey: #404040;
+    --d-grey-hover: rgb(83.1, 83.1, 83.1);
+    --l-brown: #73423f;
+    --l-brown-hover: rgb(136.4494382022, 78.3101123596, 74.7505617978);
+    --l-gold: #e5ab5d;
+    --l-gold-hover: rgb(231.6, 179.4, 109.2);
+    --l-black: #211f20;
+    --l-black-hover: rgb(55.996875, 52.603125, 54.3);
+    --red: #910000;
+    --red-hover: rgb(181.5, 0, 0);
+  }
+
+  :root .text-black {
+    color: var(--black);
+  }
+
+  :root .text-white {
+    color: var(--white);
+  }
+
+  :root .text-grey {
+    color: var(--grey);
+  }
+
+  :root .text-l-grey {
+    color: var(--l-grey);
+  }
+
+  :root .text-d-grey {
+    color: var(--d-grey);
+  }
+
+  :root .text-l-brown {
+    color: var(--l-brown);
+  }
+
+  :root .text-l-gold {
+    color: var(--l-gold);
+  }
+
+  :root .text-l-black {
+    color: var(--l-black);
+  }
+
+  :root .text-red {
+    color: var(--red);
+  }
+
+  body {
+    font-family: "Libre Baskerville", serif;
+  }
+}
+
+@layer utilities {
+  .h-1 {
+    height: 10vh;
+  }
+
+  .h-2 {
+    height: 20vh;
+  }
+
+  .h-3 {
+    height: 30vh;
+  }
+
+  .h-4 {
+    height: 40vh;
+  }
+
+  .h-5 {
+    height: 50vh;
+  }
+
+  .h-6 {
+    height: 60vh;
+  }
+
+  .h-7 {
+    height: 70vh;
+  }
+
+  .h-8 {
+    height: 80vh;
+  }
+
+  .h-9 {
+    height: 90vh;
+  }
+
+  .h-10 {
+    height: 100vh;
+  }
+
+  .w-1 {
+    width: 0.25rem;
+  }
+
+  .m-1 {
+    margin: 0.25rem;
+  }
+
+  .p-1 {
+    padding: 0.25rem;
+  }
+
+  .px-1 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .mx-1 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .my-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .radius-1 {
+    border-radius: 0.25rem;
+  }
+
+  .max-w-1 {
+    max-width: 6.25rem;
+  }
+
+  .mt-1 {
+    margin-top: 0.25rem;
+  }
+
+  .pt-1 {
+    padding-top: 0.25rem;
+  }
+
+  .mb-1 {
+    margin-bottom: 0.25rem;
+  }
+
+  .pb-1 {
+    padding-bottom: 0.25rem;
+  }
+
+  .ml-1 {
+    margin-left: 0.25rem;
+  }
+
+  .pl-1 {
+    padding-left: 0.25rem;
+  }
+
+  .mr-1 {
+    margin-right: 0.25rem;
+  }
+
+  .pr-1 {
+    padding-right: 0.25rem;
+  }
+
+  .w-2 {
+    width: 0.5rem;
+  }
+
+  .m-2 {
+    margin: 0.5rem;
+  }
+
+  .p-2 {
+    padding: 0.5rem;
+  }
+
+  .px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .mx-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .my-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .radius-2 {
+    border-radius: 0.5rem;
+  }
+
+  .max-w-2 {
+    max-width: 12.5rem;
+  }
+
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .pt-2 {
+    padding-top: 0.5rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .pb-2 {
+    padding-bottom: 0.5rem;
+  }
+
+  .ml-2 {
+    margin-left: 0.5rem;
+  }
+
+  .pl-2 {
+    padding-left: 0.5rem;
+  }
+
+  .mr-2 {
+    margin-right: 0.5rem;
+  }
+
+  .pr-2 {
+    padding-right: 0.5rem;
+  }
+
+  .w-3 {
+    width: 0.75rem;
+  }
+
+  .m-3 {
+    margin: 0.75rem;
+  }
+
+  .p-3 {
+    padding: 0.75rem;
+  }
+
+  .px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .mx-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .my-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .radius-3 {
+    border-radius: 0.75rem;
+  }
+
+  .max-w-3 {
+    max-width: 18.75rem;
+  }
+
+  .mt-3 {
+    margin-top: 0.75rem;
+  }
+
+  .pt-3 {
+    padding-top: 0.75rem;
+  }
+
+  .mb-3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .pb-3 {
+    padding-bottom: 0.75rem;
+  }
+
+  .ml-3 {
+    margin-left: 0.75rem;
+  }
+
+  .pl-3 {
+    padding-left: 0.75rem;
+  }
+
+  .mr-3 {
+    margin-right: 0.75rem;
+  }
+
+  .pr-3 {
+    padding-right: 0.75rem;
+  }
+
+  .w-4 {
+    width: 1rem;
+  }
+
+  .m-4 {
+    margin: 1rem;
+  }
+
+  .p-4 {
+    padding: 1rem;
+  }
+
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .mx-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .my-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .radius-4 {
+    border-radius: 1rem;
+  }
+
+  .max-w-4 {
+    max-width: 25rem;
+  }
+
+  .mt-4 {
+    margin-top: 1rem;
+  }
+
+  .pt-4 {
+    padding-top: 1rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .pb-4 {
+    padding-bottom: 1rem;
+  }
+
+  .ml-4 {
+    margin-left: 1rem;
+  }
+
+  .pl-4 {
+    padding-left: 1rem;
+  }
+
+  .mr-4 {
+    margin-right: 1rem;
+  }
+
+  .pr-4 {
+    padding-right: 1rem;
+  }
+
+  .w-5 {
+    width: 1.25rem;
+  }
+
+  .m-5 {
+    margin: 1.25rem;
+  }
+
+  .p-5 {
+    padding: 1.25rem;
+  }
+
+  .px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .mx-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .my-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .radius-5 {
+    border-radius: 1.25rem;
+  }
+
+  .max-w-5 {
+    max-width: 31.25rem;
+  }
+
+  .mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
+  .pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .ml-5 {
+    margin-left: 1.25rem;
+  }
+
+  .pl-5 {
+    padding-left: 1.25rem;
+  }
+
+  .mr-5 {
+    margin-right: 1.25rem;
+  }
+
+  .pr-5 {
+    padding-right: 1.25rem;
+  }
+
+  .w-6 {
+    width: 1.5rem;
+  }
+
+  .m-6 {
+    margin: 1.5rem;
+  }
+
+  .p-6 {
+    padding: 1.5rem;
+  }
+
+  .px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .mx-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .my-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .radius-6 {
+    border-radius: 1.5rem;
+  }
+
+  .max-w-6 {
+    max-width: 37.5rem;
+  }
+
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .pt-6 {
+    padding-top: 1.5rem;
+  }
+
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .pb-6 {
+    padding-bottom: 1.5rem;
+  }
+
+  .ml-6 {
+    margin-left: 1.5rem;
+  }
+
+  .pl-6 {
+    padding-left: 1.5rem;
+  }
+
+  .mr-6 {
+    margin-right: 1.5rem;
+  }
+
+  .pr-6 {
+    padding-right: 1.5rem;
+  }
+
+  .w-7 {
+    width: 1.75rem;
+  }
+
+  .m-7 {
+    margin: 1.75rem;
+  }
+
+  .p-7 {
+    padding: 1.75rem;
+  }
+
+  .px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .mx-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .py-7 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .my-7 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .radius-7 {
+    border-radius: 1.75rem;
+  }
+
+  .max-w-7 {
+    max-width: 43.75rem;
+  }
+
+  .mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .pt-7 {
+    padding-top: 1.75rem;
+  }
+
+  .mb-7 {
+    margin-bottom: 1.75rem;
+  }
+
+  .pb-7 {
+    padding-bottom: 1.75rem;
+  }
+
+  .ml-7 {
+    margin-left: 1.75rem;
+  }
+
+  .pl-7 {
+    padding-left: 1.75rem;
+  }
+
+  .mr-7 {
+    margin-right: 1.75rem;
+  }
+
+  .pr-7 {
+    padding-right: 1.75rem;
+  }
+
+  .w-8 {
+    width: 2rem;
+  }
+
+  .m-8 {
+    margin: 2rem;
+  }
+
+  .p-8 {
+    padding: 2rem;
+  }
+
+  .px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .mx-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .my-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .radius-8 {
+    border-radius: 2rem;
+  }
+
+  .max-w-8 {
+    max-width: 50rem;
+  }
+
+  .mt-8 {
+    margin-top: 2rem;
+  }
+
+  .pt-8 {
+    padding-top: 2rem;
+  }
+
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+
+  .pb-8 {
+    padding-bottom: 2rem;
+  }
+
+  .ml-8 {
+    margin-left: 2rem;
+  }
+
+  .pl-8 {
+    padding-left: 2rem;
+  }
+
+  .mr-8 {
+    margin-right: 2rem;
+  }
+
+  .pr-8 {
+    padding-right: 2rem;
+  }
+
+  .bg-black {
+    background-color: var(--black);
+  }
+
+  .border-black {
+    border-color: var(--black);
+  }
+
+  .bg-white {
+    background-color: var(--white);
+  }
+
+  .border-white {
+    border-color: var(--white);
+  }
+
+  .bg-grey {
+    background-color: var(--grey);
+  }
+
+  .border-grey {
+    border-color: var(--grey);
+  }
+
+  .bg-l-grey {
+    background-color: var(--l-grey);
+  }
+
+  .border-l-grey {
+    border-color: var(--l-grey);
+  }
+
+  .bg-d-grey {
+    background-color: var(--d-grey);
+  }
+
+  .border-d-grey {
+    border-color: var(--d-grey);
+  }
+
+  .bg-l-brown {
+    background-color: var(--l-brown);
+  }
+
+  .border-l-brown {
+    border-color: var(--l-brown);
+  }
+
+  .bg-l-gold {
+    background-color: var(--l-gold);
+  }
+
+  .border-l-gold {
+    border-color: var(--l-gold);
+  }
+
+  .bg-l-black {
+    background-color: var(--l-black);
+  }
+
+  .border-l-black {
+    border-color: var(--l-black);
+  }
+
+  .bg-red {
+    background-color: var(--red);
+  }
+
+  .border-red {
+    border-color: var(--red);
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.grid .col-1 {
+  grid-column: span 1;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid .col-2 {
+  grid-column: span 2;
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid .col-3 {
+  grid-column: span 3;
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid .col-4 {
+  grid-column: span 4;
+}
+
+.grid-cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.grid .col-5 {
+  grid-column: span 5;
+}
+
+.grid-cols-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.grid .col-6 {
+  grid-column: span 6;
+}
+
+.grid-cols-7 {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.grid .col-7 {
+  grid-column: span 7;
+}
+
+.grid-cols-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.grid .col-8 {
+  grid-column: span 8;
+}
+
+.grid-cols-9 {
+  grid-template-columns: repeat(9, 1fr);
+}
+
+.grid .col-9 {
+  grid-column: span 9;
+}
+
+.grid-cols-10 {
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.grid .col-10 {
+  grid-column: span 10;
+}
+
+.grid-cols-11 {
+  grid-template-columns: repeat(11, 1fr);
+}
+
+.grid .col-11 {
+  grid-column: span 11;
+}
+
+.grid-cols-12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.grid .col-12 {
+  grid-column: span 12;
+}
+
+@layer components {
+  .navbar {
+    background-color: var(--l-black);
+    color: var(--white);
+    padding: 1rem 0;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-menu li {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 576px) {
+    .navbar-menu li {
+      margin: 0.3125rem 0;
+    }
+  }
+
+  .navbar-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  @media screen and (max-width: 576px) {
+    .navbar-menu {
+      display: block;
+    }
+  }
+}
+
+@layer components {
+  .services {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services> :first-child {
+    grid-column: span 2;
+  }
+}
+
+@layer components {
+  .commandes-box {
+    background-color: var(--l-grey);
+    width: 21.875rem;
+    height: 21.875rem;
+    border-radius: 1.5rem;
+    text-align: center;
+  }
+
+  .commandes-box-title {
+    width: 80%;
+    padding: 1.5625rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    background-color: var(--l-black);
+    color: var(--white);
+    text-transform: uppercase;
+    transform: translate(0, -1.875rem);
+    text-align: center;
+    margin: auto;
+  }
+
+  .commandes-box ul {
+    margin: 0;
+    text-align: justify;
+    max-height: 15.625rem;
+    overflow-y: auto;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .commandes-box ul {
+      list-style: none;
+      padding: 1rem;
+    }
+  }
+
+  .commandes-box li {
+    font-size: 1rem;
+    padding-left: 0.625rem;
+    margin: 0.625rem 0;
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-gap-1 {
+  gap: 0.5rem;
+}
+
+.flex-gap-2 {
+  gap: 1rem;
+}
+
+.flex-gap-3 {
+  gap: 1.5rem;
+}
+
+.flex-gap-4 {
+  gap: 2rem;
+}
+
+.flex-gap-5 {
+  gap: 2.5rem;
+}
+
+.flex-gap-6 {
+  gap: 3rem;
+}
+
+.flex-gap-7 {
+  gap: 3.5rem;
+}
+
+.flex-gap-8 {
+  gap: 4rem;
+}
+
+.flex-gap-9 {
+  gap: 4.5rem;
+}
+
+.flex-gap-10 {
+  gap: 5rem;
+}
+
+.flex-gap-11 {
+  gap: 5.5rem;
+}
+
+.flex-gap-12 {
+  gap: 6rem;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.flex-space-between {
+  display: flex;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.star::before {
+  content: "☆";
+}
+
+.checked::before {
+  content: "★";
+}
+
+@layer components {
+  .redirectCo {
+    padding: 1.5rem 1rem;
+  }
+
+  .redirectCo p {
+    margin: 0 0.3125rem;
+    color: var(--grey);
+  }
+
+  .redirectCo a {
+    color: var(--d-grey);
+  }
+}
+
+@layer components {
+  .form {
+    flex-direction: column;
+  }
+
+  .form .input {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    outline: none;
+    padding: 1rem;
+    background-color: var(--l-grey);
+    border-radius: 0.3125rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.625rem;
+    color: var(--grey);
+    text-align: center;
+    width: 18.75rem;
+  }
+
+  .form .input::placeholder {
+    text-align: center;
+    color: var(--grey);
+  }
+
+  .form .input[type=date],
+  .form .input[type=password] {
+    color: var(--grey);
+    text-align: center;
+  }
+
+  .form .input[type=date] {
+    padding-left: 2rem;
+  }
+
+  .form .input-label {
+    color: var(--grey);
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .form .button {
+    margin-top: 0.625rem;
+    font-size: 0.875rem;
+    width: 18.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--l-gold);
+    padding: 1.25rem 1rem;
+    color: var(--white);
+  }
+
+  .form .button:hover {
+    background-color: var(--l-gold-hover);
+  }
+}
+
+@layer components {
+  .socials {
+    margin-top: 2rem;
+  }
+
+  .socials p {
+    font-size: 0.625rem;
+    color: var(--d-grey);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .socials p::before,
+  .socials p::after {
+    content: "";
+    border-bottom: 0.0625rem solid var(--grey);
+    flex: 1 0 auto;
+    height: 0.0625rem;
+    margin: 0 0.625rem;
+    max-width: 6.25rem;
+  }
+
+  .socials-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .socials-img img {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 0.75rem;
+  }
+}
+
+@layer components {
+  .sidebar {
+    display: flex;
+    width: 21.875rem;
+    height: 100vh;
+  }
+
+  .sidebar-list {
+    padding: 1.5625rem;
+    list-style-type: none;
+    background-color: var(--l-brown);
+    margin: 0;
+  }
+
+  .sidebar-list>* {
+    margin: auto;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 3rem;
+    line-height: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  .sidebar-list li {
+    margin-bottom: 3.125rem;
+  }
+
+  .sidebar-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .sidebar-list img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 3.125rem;
+  }
+}
+
+@layer components {
+  .button {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    padding: 0.625rem 1rem;
+    display: inline-block;
+    border-radius: 0.375rem;
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 1rem;
+    line-height: 1.125rem;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .button-lg {
+    padding: 1rem 1.5rem;
+  }
+
+  .button-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1rem;
+  }
+
+  .button-primary {
+    background-color: var(--l-gold);
+  }
+
+  .button-primary:hover {
+    background-color: var(--l-gold-hover);
+  }
+
+  .button-secondary {
+    background-color: var(--l-brown);
+  }
+
+  .button-secondary:hover {
+    background-color: var(--l-brown-hover);
+  }
+}
+
+@layer components {
+  .banner {
+    display: flex;
+    aspect-ratio: 100/42;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+  }
+
+  .banner-text {
+    padding: 5%;
+  }
+
+  .banner-text::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: var(--black);
+    opacity: 0.5;
+  }
+
+  .banner-text>* {
+    margin: auto;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 3rem;
+    line-height: 3.75rem;
+    text-align: center;
+    position: relative;
+  }
+}
+
+@layer components {
+  .container {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+  @media screen and (min-width: 576px) {
+    .container {
+      margin: auto;
+      max-width: calc(576px - 4rem);
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .container {
+      max-width: calc(768px - 4rem);
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .container {
+      max-width: calc(992px - 4rem);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .container {
+      max-width: calc(1200px - 4rem);
+    }
+  }
+
+  @media screen and (min-width: 1400px) {
+    .container {
+      max-width: calc(1400px - 4rem);
+    }
+  }
+}
+
+/*# sourceMappingURL=main.css.map */
