@@ -9,6 +9,7 @@ use App\Controllers\RepairController;
 use App\Controllers\DashboardController;
 use App\Controllers\ServiceController;
 use App\Controllers\SearchController;
+use App\Controllers\AdminController;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -30,6 +31,8 @@ $router->post('/add_service', [ServiceController::class, 'addService']);
 $router->get('/search_results', [SearchController::class, 'searchResults']);
 $router->post('/add_address', [DashboardController::class, 'addAddress']);
 $router->post('/delete_address', [DashboardController::class, 'deleteAddress']);
+
+$router->get('/admin/performance', [AdminController::class, 'viewStatistics']);
 
 $response = $router->route($request);
 
