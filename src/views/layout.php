@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" href="index.php">Doc2Wheels</a>
@@ -34,7 +33,6 @@
     <?= $content ?>
 </div>
 
-<!-- Footer -->
 <footer class="bg-dark text-white text-center py-3">
     &copy; 2024 Doc2Wheels. Tous droits réservés.
 </footer>

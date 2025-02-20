@@ -11,22 +11,26 @@ class Repair {
         $this->pdo = Database::getInstance()->getConnection();
     }
 
-    public function createRepair($user_id, $type_service, $address_id, $technician_id) {
-        $sql = "INSERT INTO repairs (user_id, type_service, address_id, technician_id) VALUES (:user_id, :type_service, :address_id, :technician_id)";
+    public function createRepair($user_id, $type_service, $address_id, $technician_id, $vehicle_category_id, $price, $message) {
+        $sql = "INSERT INTO repairs (user_id, type_service, address_id, technician_id, vehicle_category_id, price, message) VALUES (:user_id, :type_service, :address_id, :technician_id, :vehicle_category_id, :price, :message)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':user_id' => $user_id,
             ':type_service' => $type_service,
             ':address_id' => $address_id,
-            ':technician_id' => $technician_id
+            ':technician_id' => $technician_id,
+            ':vehicle_category_id' => $vehicle_category_id,
+            ':price' => $price,
+            ':message' => $message
         ]);
     }
 
     public function getRepairs() {
-        $sql = "SELECT repairs.*, users.name AS client_name, addresses.address, addresses.city, addresses.postal_code 
+        $sql = "SELECT repairs.*, users.name AS client_name, addresses.address, addresses.city, addresses.postal_code, vehicle_categories.name AS vehicle_category 
                 FROM repairs 
                 JOIN users ON repairs.user_id = users.id
-                JOIN addresses ON repairs.address_id = addresses.id";
+                JOIN addresses ON repairs.address_id = addresses.id
+                JOIN vehicle_categories ON repairs.vehicle_category_id = vehicle_categories.id";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -57,10 +61,11 @@ class Repair {
     }
     
     public function getUserRepairs($user_id) {
-        $sql = "SELECT repairs.*, users.name AS client_name, addresses.address, addresses.city, addresses.postal_code 
+        $sql = "SELECT repairs.*, users.name AS client_name, addresses.address, addresses.city, addresses.postal_code, vehicle_categories.name AS vehicle_category 
                 FROM repairs 
                 JOIN users ON repairs.user_id = users.id
                 JOIN addresses ON repairs.address_id = addresses.id
+                JOIN vehicle_categories ON repairs.vehicle_category_id = vehicle_categories.id
                 WHERE repairs.user_id = :user_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':user_id' => $user_id]);

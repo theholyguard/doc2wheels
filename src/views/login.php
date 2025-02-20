@@ -7,8 +7,8 @@
 </head>
 <body class="bg-light">
     
-    <!-- ✅ Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">Doc2Wheels</a>
             <div class="collapse navbar-collapse">

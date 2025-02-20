@@ -25,13 +25,10 @@ class DashboardController
 
         $repairs = ($role === 'technician') ? $repair->getRepairs() : $repair->getUserRepairs($user_id);
 
-        // Récupérer tous les services disponibles, triés par catégorie
         $allServicesByCategory = $service->getAllServicesGroupedByCategory();
 
-        // Récupérer les services sélectionnés par le technicien
         $technicianServices = $service->getTechnicianServices($user_id);
 
-        // Récupérer les adresses de l'utilisateur
         $userAddresses = $user->getUserAddresses($user_id);
 
         include __DIR__ . '/../views/dashboard.php';
