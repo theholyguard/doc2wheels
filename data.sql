@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS technician_services;
 DROP TABLE IF EXISTS repairs;
 DROP TABLE IF EXISTS services;
@@ -35,7 +36,6 @@ CREATE TABLE technician_services (
     service_id INT REFERENCES services(id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE vehicle_categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -52,10 +52,18 @@ CREATE TABLE repairs (
     price DECIMAL(10, 2) NOT NULL,
     message TEXT,
     status VARCHAR(50) DEFAULT 'en attente',
+    reviewed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    repair_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (repair_id) REFERENCES repairs(id)
+);
 
 INSERT INTO services (category, price) VALUES
     ('Dépannage', 100.00),
@@ -67,6 +75,3 @@ INSERT INTO vehicle_categories (name, price) VALUES
     ('Roadster', 40.00),
     ('Scooter', 30.00),
     ('Trail', 20.00);
-
-INSERT INTO users (name, email, password, role) VALUES
-    ('Noan', 'a@b.c', 'test1234', 'technician');

@@ -52,9 +52,10 @@ class RepairController
                 $priceDetails = $this->calculatePrice($selectedCategory, $selectedVehicleCategoryId, $selectedAddressId, $technician['address_id']);
                 $technician['price'] = $priceDetails['totalPrice'];
                 $technician['discount'] = $priceDetails['discount'];
+                $technician['average_rating'] = $repair->getTechnicianAverageRating($technician['technician_id']);
+                error_log("Technician Data: " . print_r($technician, true));
             }
 
-            // Pass the selected values to the view
             $selectedValues = [
                 'selectedCategory' => $selectedCategory,
                 'selectedAddressId' => $selectedAddressId,
@@ -62,6 +63,7 @@ class RepairController
                 'message' => $message,
                 'technicians' => $technicians
             ];
+            error_log("Selected Values: " . print_r($selectedValues, true));
         }
 
         if (isset($_GET['technician_id']) && isset($_GET['category']) && isset($_GET['address_id']) && isset($_GET['vehicle_category_id']) && isset($_GET['message'])) {
@@ -71,9 +73,9 @@ class RepairController
             $vehicle_category_id = $_GET['vehicle_category_id'];
             $message = $_GET['message'];
 
-            $price = $this->calculatePrice($category, $vehicle_category_id, $address_id, $technician_id);
+            $priceDetails = $this->calculatePrice($category, $vehicle_category_id, $address_id, $technician_id);
 
-            if ($repair->createRepair($user_id, $category, $address_id, $technician_id, $vehicle_category_id, $price, $message)) {
+            if ($repair->createRepair($user_id, $category, $address_id, $technician_id, $vehicle_category_id, $priceDetails['totalPrice'], $message)) {
                 $_SESSION['success_message'] = "Votre demande a bien été envoyée !";
                 header("Location: /dashboard");
                 exit();
@@ -155,17 +157,34 @@ class RepairController
         session_start();
         Auth::redirectIfNotLoggedIn();
 
-        if ($_SESSION['role'] !== 'technician') {
-            header("Location: /dashboard");
-            exit();
-        }
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $repair_id = $_POST['repair_id'];
             $status = $_POST['status'];
 
             $repair = new Repair();
             $repair->updateRepairStatus($repair_id, $status);
+
+            header("Location: /dashboard");
+            exit();
+        }
+    }
+
+    public function addReview()
+    {
+        session_start();
+        Auth::redirectIfNotLoggedIn();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $repair_id = $_POST['repair_id'];
+            $rating = $_POST['rating'];
+            $comment = $_POST['comment'];
+
+            $repair = new Repair();
+            if ($repair->addReview($repair_id, $rating, $comment)) {
+                $_SESSION['success_message'] = "Votre avis a été ajouté avec succès !";
+            } else {
+                $_SESSION['error_message'] = "Une erreur est survenue lors de l'ajout de l'avis.";
+            }
 
             header("Location: /dashboard");
             exit();
