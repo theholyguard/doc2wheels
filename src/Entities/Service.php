@@ -12,14 +12,12 @@ class Service {
         $this->pdo = Database::getInstance()->getConnection();
     }
 
-    // ✅ Récupérer tous les services disponibles
     public function getAllServices() {
         $sql = "SELECT * FROM services ORDER BY name";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ Récupérer les services sélectionnés par un technicien
     public function getTechnicianServices($technician_id) {
         $sql = "SELECT ts.service_id, s.name FROM technician_services ts 
                 JOIN services s ON ts.service_id = s.id
@@ -29,11 +27,11 @@ class Service {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ Mettre à jour les services proposés par un technicien
     public function updateTechnicianServices($technician_id, $selected_services) {
         try {
             $this->pdo->beginTransaction();
 
+<<<<<<< HEAD:src/Entities/Service.php
             // Supprimer les services existants
             $sql = "DELETE FROM technician_services WHERE technician_id = :technician_id";
             $stmt = $this->pdo->prepare($sql);
@@ -44,6 +42,18 @@ class Service {
             $stmt = $this->pdo->prepare($sql);
             foreach ($selected_services as $service_id) {
                 $stmt->execute([':technician_id' => $technician_id, ':service_id' => $service_id]);
+=======
+            $sqlDelete = "DELETE FROM technician_services WHERE technician_id = :technician_id";
+            $stmt = $this->pdo->prepare($sqlDelete);
+            $stmt->execute([':technician_id' => $technician_id]);
+
+            if (!empty($selected_services)) {
+                $sqlInsert = "INSERT INTO technician_services (technician_id, service_id) VALUES (:technician_id, :service_id)";
+                $stmt = $this->pdo->prepare($sqlInsert);
+                foreach ($selected_services as $service_id) {
+                    $stmt->execute([':technician_id' => $technician_id, ':service_id' => $service_id]);
+                }
+>>>>>>> branche-thomas:src/Services.php
             }
 
             $this->pdo->commit();
@@ -53,7 +63,6 @@ class Service {
         }
     }
 
-    // ✅ Trouver les techniciens proposant un service spécifique
     public function findTechniciansByService($service_id) {
         $sql = "SELECT u.id AS technician_id, u.name AS technician_name, u.location
                 FROM technician_services ts
@@ -64,7 +73,6 @@ class Service {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ Récupérer tous les services groupés par catégorie
     public function getAllServicesGroupedByCategory() {
         $sql = "SELECT * FROM services";
         $stmt = $this->pdo->query($sql);
@@ -72,7 +80,12 @@ class Service {
 
         $groupedServices = [];
         foreach ($services as $service) {
+<<<<<<< HEAD:src/Entities/Service.php
             $groupedServices[$service['category']][] = $service;
+=======
+            $category = $service['category'] ?? 'Autre';
+            $groupedServices[$category][] = $service;
+>>>>>>> branche-thomas:src/Services.php
         }
 
         return $groupedServices;
