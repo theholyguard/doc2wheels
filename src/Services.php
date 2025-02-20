@@ -8,14 +8,12 @@ class Service {
         $this->pdo = Database::getInstance()->getConnection();
     }
 
-    // ✅ Récupérer tous les services disponibles
     public function getAllServices() {
         $sql = "SELECT * FROM services ORDER BY name";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ Récupérer les services sélectionnés par un technicien
     public function getTechnicianServices($technician_id) {
         $sql = "SELECT ts.service_id, s.name FROM technician_services ts 
                 JOIN services s ON ts.service_id = s.id
@@ -25,17 +23,14 @@ class Service {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ Mettre à jour les services proposés par un technicien
     public function updateTechnicianServices($technician_id, $selected_services) {
         try {
             $this->pdo->beginTransaction();
 
-            // Supprimer les services précédemment enregistrés
             $sqlDelete = "DELETE FROM technician_services WHERE technician_id = :technician_id";
             $stmt = $this->pdo->prepare($sqlDelete);
             $stmt->execute([':technician_id' => $technician_id]);
 
-            // Ajouter les nouveaux services sélectionnés
             if (!empty($selected_services)) {
                 $sqlInsert = "INSERT INTO technician_services (technician_id, service_id) VALUES (:technician_id, :service_id)";
                 $stmt = $this->pdo->prepare($sqlInsert);
@@ -51,7 +46,6 @@ class Service {
         }
     }
 
-    // ✅ Trouver les techniciens proposant un service spécifique
     public function findTechniciansByService($service_id) {
         $sql = "SELECT u.id AS technician_id, u.name AS technician_name, u.location
                 FROM technician_services ts
@@ -62,7 +56,6 @@ class Service {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ Récupérer tous les services groupés par catégorie
     public function getAllServicesGroupedByCategory() {
         $sql = "SELECT category, id, name FROM services ORDER BY category, name";
         $stmt = $this->pdo->query($sql);
@@ -71,7 +64,6 @@ class Service {
         $groupedServices = [];
 
         foreach ($services as $service) {
-            // S'assurer que la catégorie existe, sinon assigner "Autre"
             $category = $service['category'] ?? 'Autre';
             $groupedServices[$category][] = $service;
         }
