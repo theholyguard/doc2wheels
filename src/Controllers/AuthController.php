@@ -13,25 +13,19 @@ class AuthController
         ini_set('display_errors', 1);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user = new User();
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $loggedInUser = $user->loginUser($email, $password);
+            $user = new User();
+            $loginResult = $user->loginUser($email, $password);
 
-            if ($loggedInUser) {
-                $_SESSION['user_id'] = $loggedInUser['id'];
-                $_SESSION['role'] = $loggedInUser['role'];
-                $_SESSION['success_message'] = "Connexion réussie !";
-
-                if ($_SESSION['role'] === 'technician') {
-                    header("Location: /dashboard");
-                } else {
-                    header("Location: /");
-                }
+            if (is_array($loginResult)) {
+                $_SESSION['user_id'] = $loginResult['id'];
+                $_SESSION['role'] = $loginResult['role'];
+                header("Location: /dashboard");
                 exit();
             } else {
-                $error = "Email ou mot de passe incorrect.";
+                $error = $loginResult;
             }
         }
 
@@ -45,18 +39,19 @@ class AuthController
         ini_set('display_errors', 1);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user = new User();
             $name = $_POST['name'];
             $email = $_POST['email'];
             $password = $_POST['password'];
-            $role = $_POST['role']; 
+            $role = $_POST['role'] ?? 'client';
 
-            if ($user->createUser($name, $email, $password, $role)) {
-                $_SESSION['success_message'] = "Inscription réussie ! Vous pouvez vous connecter.";
+            $user = new User();
+            $registerResult = $user->createUser($name, $email, $password, $role);
+
+            if ($registerResult === true) {
                 header("Location: /login");
                 exit();
             } else {
-                $error = "Une erreur est survenue, veuillez réessayer.";
+                $error = $registerResult;
             }
         }
 
@@ -67,7 +62,7 @@ class AuthController
     {
         session_start();
         session_destroy();
-        header("Location: /"); 
+        header("Location: /login");
         exit();
     }
 }

@@ -34,7 +34,11 @@
                 <p class="text-center text-muted">Aucune demande en attente.</p>
             <?php else: ?>
                 <div class="row">
-                    <?php foreach ($repairs as $repair): ?>
+                    <?php 
+                    $repairInstance = new \App\Entities\Repair();
+                    foreach ($repairs as $repair): 
+                        error_log("Repair Data: " . print_r($repair, true));
+                    ?>
                         <div class="col-md-6">
                             <div class="card shadow-sm mb-3">
                                 <div class="card-body">
@@ -43,7 +47,7 @@
                                     <p class="card-text"><strong>🛠 Statut :</strong> 
                                         <span class="badge bg-info"><?= ucfirst($repair['status']); ?></span>
                                     </p>
-                                    <p class="card-text"><strong>👤 Client :</strong> <?= htmlspecialchars($repair['client_name']); ?></p>
+                                    <p class="card-text"><strong>👤 Client :</strong> <?= htmlspecialchars($repair['client_name'] ?? $repair['technician_name']); ?></p>
                                     <p class="card-text"><strong>🏍 Catégorie de moto :</strong> <?= htmlspecialchars($repair['vehicle_category']); ?></p>
                                     <p class="card-text"><strong>💰 Prix :</strong> <?= htmlspecialchars($repair['price']); ?> €</p>
                                     <p class="card-text"><strong>💬 Message :</strong> <?= htmlspecialchars($repair['message']); ?></p>
@@ -59,6 +63,57 @@
                                             <input type="hidden" name="status" value="refusé">
                                             <button type="submit" class="btn btn-danger btn-sm">❌ Refuser</button>
                                         </form>
+                                    <?php endif; ?>
+
+                                    <?php if ($role === 'client' && ($repair['status'] === 'en attente' || $repair['status'] === 'en cours')): ?>
+                                        <form method="POST" action="/update_repair" class="d-inline">
+                                            <input type="hidden" name="repair_id" value="<?= $repair['id']; ?>">
+                                            <input type="hidden" name="status" value="annulé">
+                                            <button type="submit" class="btn btn-warning btn-sm">❌ Annuler</button>
+                                        </form>
+                                    <?php endif; ?>
+
+                                    <?php if ($role === 'client' && $repair['status'] === 'en cours'): ?>
+                                        <form method="POST" action="/update_repair" class="d-inline">
+                                            <input type="hidden" name="repair_id" value="<?= $repair['id']; ?>">
+                                            <input type="hidden" name="status" value="terminé">
+                                            <button type="submit" class="btn btn-primary btn-sm">✔️ Terminer</button>
+                                        </form>
+                                    <?php endif; ?>
+
+                                    <?php if ($role === 'client' && $repair['status'] === 'terminé' && !$repair['reviewed']): ?>
+                                        <form method="POST" action="/add_review" class="mt-3">
+                                            <input type="hidden" name="repair_id" value="<?= $repair['id']; ?>">
+                                            <div class="mb-3">
+                                                <label class="form-label">Note :</label>
+                                                <select name="rating" class="form-select" required>
+                                                    <option value="">-- Sélectionnez une note --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Commentaire :</label>
+                                                <textarea name="comment" class="form-control" rows="3" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                                        </form>
+                                    <?php endif; ?>
+
+                                    <?php if ($repair['reviewed']): ?>
+                                        <h5 class="mt-3">Avis :</h5>
+                                        <?php 
+                                        $reviews = $repairInstance->getRepairReviews($repair['id']); 
+                                        error_log("Reviews Data for Repair ID {$repair['id']}: " . print_r($reviews, true));
+                                        ?>
+                                        <?php foreach ($reviews as $review): ?>
+                                            <p class="card-text"><strong>Note :</strong> <?= htmlspecialchars($review['rating']); ?>/5</p>
+                                            <p class="card-text"><strong>Commentaire :</strong> <?= htmlspecialchars($review['comment']); ?></p>
+                                            <p class="card-text"><strong>Client :</strong> <?= htmlspecialchars($review['client_name']); ?></p>
+                                        <?php endforeach; ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -125,6 +180,25 @@
                     </li>
                 <?php endforeach; ?>
             </ul>
+        </div>
+
+        <div class="card p-4 mb-4">
+            <h4 class="mb-3">🔧 Modifier mes informations</h4>
+            <form method="POST" action="/update_user_info">
+                <div class="mb-3">
+                    <label class="form-label">Nom :</label>
+                    <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($userInfo['name']); ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email :</label>
+                    <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($userInfo['email']); ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe :</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+            </form>
         </div>
 
     </div>

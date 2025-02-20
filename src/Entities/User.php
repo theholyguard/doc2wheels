@@ -104,5 +104,17 @@ class User {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([':id' => $id]);
     }
+
+    public function updateUserInfo($id, $name, $email, $password) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':password' => $hashedPassword,
+            ':id' => $id
+        ]);
+    }
 }
 ?>

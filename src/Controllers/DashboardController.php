@@ -24,6 +24,7 @@ class DashboardController
         $userName = $userInfo['name'];
 
         $repairs = ($role === 'technician') ? $repair->getRepairs() : $repair->getUserRepairs($user_id);
+        error_log("Repairs Data: " . print_r($repairs, true));
 
         $allServicesByCategory = $service->getAllServicesGroupedByCategory();
 
@@ -70,6 +71,29 @@ class DashboardController
                 $_SESSION['success_message'] = "Adresse supprimée avec succès !";
             } else {
                 $_SESSION['error_message'] = "Une erreur est survenue lors de la suppression de l'adresse.";
+            }
+
+            header("Location: /dashboard");
+            exit();
+        }
+    }
+
+    public function updateUserInfo()
+    {
+        session_start();
+        Auth::redirectIfNotLoggedIn();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user = new User();
+            $user_id = $_SESSION['user_id'];
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            if ($user->updateUserInfo($user_id, $name, $email, $password)) {
+                $_SESSION['success_message'] = "Informations mises à jour avec succès !";
+            } else {
+                $_SESSION['error_message'] = "Une erreur est survenue lors de la mise à jour des informations.";
             }
 
             header("Location: /dashboard");
