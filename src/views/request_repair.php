@@ -10,33 +10,47 @@
     <div class="container my-5">
         <h2 class="text-center">📩 Demande de Réparation</h2>
 
-        <!-- ✅ Message d'erreur -->
+
         <?php if (isset($error)): ?>
             <div class="alert alert-danger text-center"><?= $error ?></div>
         <?php endif; ?>
 
         <form method="POST" class="card p-4 shadow">
             <div class="mb-3">
-                <label class="form-label">Type de service :</label>
-                <select name="type_service" class="form-select" required>
-                    <option value="">-- Sélectionnez un service --</option>
+                <label class="form-label">Catégorie de service :</label>
+                <select name="category" class="form-select" required>
+                    <option value="">-- Sélectionnez une catégorie --</option>
                     <?php foreach ($allServicesByCategory as $category => $services): ?>
-                        <optgroup label="<?= htmlspecialchars($category); ?>">
-                            <?php foreach ($services as $s) : ?>
-                                <option value="<?= htmlspecialchars($s['name']); ?>">
-                                    <?= htmlspecialchars($s['name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </optgroup>
+                        <option value="<?= htmlspecialchars($category); ?>">
+                            <?= htmlspecialchars($category); ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Adresse :</label>
-                <input type="text" name="location" class="form-control" placeholder="Entrez votre adresse" required>
+                <select name="address_id" class="form-select" required>
+                    <option value="">-- Sélectionnez une adresse --</option>
+                    <?php foreach ($userAddresses as $address): ?>
+                        <option value="<?= $address['id']; ?>">
+                            <?= htmlspecialchars($address['address']) . ', ' . htmlspecialchars($address['city']) . ' ' . htmlspecialchars($address['postal_code']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-            <button type="submit" class="btn btn-success w-100">Envoyer</button>
+            <button type="submit" class="btn btn-success w-100">Rechercher Techniciens</button>
         </form>
+
+        <?php if (isset($technicians)): ?>
+            <h3 class="text-center mt-5">Techniciens disponibles</h3>
+            <div class="list-group">
+                <?php foreach ($technicians as $technician): ?>
+                    <a href="/request_repair?technician_id=<?= $technician['technician_id']; ?>&category=<?= htmlspecialchars($selectedCategory); ?>&address_id=<?= htmlspecialchars($selectedAddressId); ?>" class="list-group-item list-group-item-action">
+                        <?= htmlspecialchars($technician['technician_name']); ?> - <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
 </body>

@@ -25,9 +25,9 @@ class AuthController
                 $_SESSION['success_message'] = "Connexion réussie !";
 
                 if ($_SESSION['role'] === 'technician') {
-                    header("Location: /dashboard"); // Redirige les techniciens vers le dashboard
+                    header("Location: /dashboard");
                 } else {
-                    header("Location: /"); // Redirige les clients vers l'accueil
+                    header("Location: /");
                 }
                 exit();
             } else {
@@ -49,7 +49,7 @@ class AuthController
             $name = $_POST['name'];
             $email = $_POST['email'];
             $password = $_POST['password'];
-            $role = $_POST['role']; // Récupérer le rôle choisi (client ou technicien)
+            $role = $_POST['role']; 
 
             if ($user->createUser($name, $email, $password, $role)) {
                 $_SESSION['success_message'] = "Inscription réussie ! Vous pouvez vous connecter.";
@@ -66,8 +66,8 @@ class AuthController
     public function logout()
     {
         session_start();
-        session_destroy(); // Supprime toutes les données de session
-        header("Location: /"); // Redirige vers l'accueil
+        session_destroy();
+        header("Location: /"); 
         exit();
     }
 }

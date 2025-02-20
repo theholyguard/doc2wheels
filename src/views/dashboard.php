@@ -26,9 +26,8 @@
 
     <div class="container my-4">
         <h2 class="text-center">Tableau de bord</h2>
-        <p class="text-center">Bienvenue, <?= ucfirst($role); ?>.</p>
+        <p class="text-center">Bienvenue, <?= htmlspecialchars($userName); ?>.</p>
 
-        <!-- ✅ Affichage des demandes clients -->
         <div class="container my-4">
             <h3 class="text-center">📌 Demandes de réparation</h3>
             <?php if (empty($repairs)): ?>
@@ -40,13 +39,12 @@
                             <div class="card shadow-sm mb-3">
                                 <div class="card-body">
                                     <h5 class="card-title">🔧 <?= htmlspecialchars($repair['type_service']); ?></h5>
-                                    <p class="card-text"><strong>📍 Lieu :</strong> <?= htmlspecialchars($repair['location']); ?></p>
+                                    <p class="card-text"><strong>📍 Lieu :</strong> <?= htmlspecialchars($repair['address']) . ', ' . htmlspecialchars($repair['city']) . ' ' . htmlspecialchars($repair['postal_code']); ?></p>
                                     <p class="card-text"><strong>🛠 Statut :</strong> 
                                         <span class="badge bg-info"><?= ucfirst($repair['status']); ?></span>
                                     </p>
                                     <p class="card-text"><strong>👤 Client :</strong> <?= htmlspecialchars($repair['client_name']); ?></p>
 
-                                    <!-- Boutons Accepter / Refuser -->
                                     <?php if ($role === 'technician' && $repair['status'] === 'en attente'): ?>
                                         <form method="POST" action="/update_repair" class="d-inline">
                                             <input type="hidden" name="repair_id" value="<?= $repair['id']; ?>">
@@ -67,7 +65,6 @@
             <?php endif; ?>
         </div>
 
-        <!-- ✅ Gestion des services proposés par le technicien -->
         <?php if ($role === 'technician'): ?>
             <div class="card p-4 mb-4">
                 <h4 class="mb-3">🛠️ Mes services proposés</h4>
@@ -94,6 +91,38 @@
                 </form>
             </div>
         <?php endif; ?>
+
+        <div class="card p-4 mb-4">
+            <h4 class="mb-3">📍 Mes adresses</h4>
+            <form method="POST" action="/add_address">
+                <div class="mb-3">
+                    <label class="form-label">Adresse :</label>
+                    <input type="text" name="address" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ville :</label>
+                    <input type="text" name="city" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Code postal :</label>
+                    <input type="text" name="postal_code" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter une adresse</button>
+            </form>
+
+            <h5 class="mt-4">Adresses enregistrées :</h5>
+            <ul class="list-group">
+                <?php foreach ($userAddresses as $address): ?>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <?= htmlspecialchars($address['address']) . ', ' . htmlspecialchars($address['city']) . ' ' . htmlspecialchars($address['postal_code']); ?>
+                        <form method="POST" action="/delete_address" class="d-inline">
+                            <input type="hidden" name="address_id" value="<?= $address['id']; ?>">
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
 
     </div>
 

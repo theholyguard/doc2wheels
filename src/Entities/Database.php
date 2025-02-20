@@ -28,7 +28,6 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES => false
             ]);
 
-            // ✅ Vérifier l'utilisateur PostgreSQL réellement utilisé
             $stmt = $this->pdo->query("SELECT current_user;");
             $currentUser = $stmt->fetchColumn();
 

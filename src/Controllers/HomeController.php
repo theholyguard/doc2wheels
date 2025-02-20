@@ -12,11 +12,10 @@ class HomeController
         ob_start();
         ?>
 
-        <!-- ✅ Messages de succès et statut de connexion -->
         <div class="container mt-3">
             <?php if (isset($_SESSION['success_message'])): ?>
                 <div class="alert alert-success text-center"><?= $_SESSION['success_message']; ?></div>
-                <?php unset($_SESSION['success_message']); // Supprimer après affichage ?>
+                <?php unset($_SESSION['success_message']); ?>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -38,7 +37,6 @@ class HomeController
             </div>
         </header>
 
-        <!-- ✅ Formulaire de recherche de services -->
         <section class="container my-5">
             <h2 class="text-center">🔍 Trouvez un service près de chez vous</h2>
 
@@ -47,7 +45,6 @@ class HomeController
                     <label class="form-label">Service</label>
                     <input type="text" id="service-search" name="query" class="form-control" placeholder="Ex: Vidange, Freinage, Électricité..." required list="services-list">
                     <datalist id="services-list">
-                        <!-- ✅ Les suggestions seront insérées ici via AJAX -->
                     </datalist>
                 </div>
                 <div class="col-md-4">
@@ -60,7 +57,6 @@ class HomeController
             </form>
         </section>
 
-        <!-- ✅ Script pour charger les suggestions -->
         <script>
         document.addEventListener("DOMContentLoaded", function() {
             let serviceInput = document.getElementById("service-search");
@@ -68,7 +64,7 @@ class HomeController
 
             serviceInput.addEventListener("input", function() {
                 let query = serviceInput.value;
-                if (query.length > 1) { // 🔹 Ne lance la recherche qu'après 2 lettres tapées
+                if (query.length > 1) { 
                     fetch("/autocomplete?q=" + encodeURIComponent(query))
                     .then(response => response.json())
                     .then(data => {
@@ -84,7 +80,6 @@ class HomeController
         });
         </script>
 
-        <!-- ✅ Section services -->
         <section class="container my-5">
             <h2 class="text-center">Nos services</h2>
             <div class="row">

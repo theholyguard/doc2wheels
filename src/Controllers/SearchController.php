@@ -14,14 +14,12 @@ class SearchController
 
         $service = new Service();
 
-        // Récupérer la requête utilisateur
         $query = isset($_GET['query']) ? trim($_GET['query']) : '';
         $location = isset($_GET['location']) ? trim($_GET['location']) : '';
 
         $results = [];
 
         if (!empty($query) && !empty($location)) {
-            // Rechercher les services correspondants
             $results = $service->searchServices($query, $location);
         }
 

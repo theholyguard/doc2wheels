@@ -5,9 +5,17 @@ namespace App\Controllers;
 use App\Entities\Repair;
 use App\Entities\Service;
 use App\Entities\Auth;
+use App\Entities\Database;
+use App\Entities\User;
 
 class RepairController
 {
+    private $pdo;
+
+    public function __construct() {
+        $this->pdo = Database::getInstance()->getConnection();
+    }
+
     public function requestRepair()
     {
         session_start();
@@ -15,14 +23,23 @@ class RepairController
 
         $repair = new Repair();
         $service = new Service();
+        $user = new User();
         $user_id = $_SESSION['user_id'];
         $allServicesByCategory = $service->getAllServicesGroupedByCategory();
+        $userAddresses = $user->getUserAddresses($user_id);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $type_service = $_POST['type_service'];
-            $location = $_POST['location'];
+            $selectedCategory = $_POST['category'];
+            $selectedAddressId = $_POST['address_id'];
+            $technicians = $service->findTechniciansByCategory($selectedCategory);
+        }
 
-            if ($repair->createRepair($user_id, $type_service, $location)) {
+        if (isset($_GET['technician_id']) && isset($_GET['category']) && isset($_GET['address_id'])) {
+            $technician_id = $_GET['technician_id'];
+            $category = $_GET['category'];
+            $address_id = $_GET['address_id'];
+
+            if ($repair->createRepair($user_id, $category, $address_id, $technician_id)) {
                 $_SESSION['success_message'] = "Votre demande a bien été envoyée !";
                 header("Location: /dashboard");
                 exit();

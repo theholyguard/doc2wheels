@@ -19,7 +19,7 @@ class Router
     public function route(Request $request)
     {
         $method = $request->method;
-        $uri = strtok($request->uri, '?'); // Ignore query parameters
+        $uri = strtok($request->uri, '?');
 
         if (isset($this->routes[$method][$uri])) {
             $action = $this->routes[$method][$uri];

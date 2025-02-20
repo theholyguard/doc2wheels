@@ -11,27 +11,26 @@ class Repair {
         $this->pdo = Database::getInstance()->getConnection();
     }
 
-    // ✅ CREATE : Ajouter une demande de réparation
-    public function createRepair($user_id, $type_service, $location) {
-        $sql = "INSERT INTO repairs (user_id, type_service, location) VALUES (:user_id, :type_service, :location)";
+    public function createRepair($user_id, $type_service, $address_id, $technician_id) {
+        $sql = "INSERT INTO repairs (user_id, type_service, address_id, technician_id) VALUES (:user_id, :type_service, :address_id, :technician_id)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':user_id' => $user_id,
             ':type_service' => $type_service,
-            ':location' => $location
+            ':address_id' => $address_id,
+            ':technician_id' => $technician_id
         ]);
     }
 
-    // ✅ READ : Récupérer toutes les demandes de réparation
     public function getRepairs() {
-        $sql = "SELECT repairs.*, users.name AS client_name 
+        $sql = "SELECT repairs.*, users.name AS client_name, addresses.address, addresses.city, addresses.postal_code 
                 FROM repairs 
-                JOIN users ON repairs.user_id = users.id";
+                JOIN users ON repairs.user_id = users.id
+                JOIN addresses ON repairs.address_id = addresses.id";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ✅ UPDATE : Modifier le statut d'une réparation
     public function updateRepairStatus($repair_id, $status) {
         $sql = "UPDATE repairs SET status = :status WHERE id = :repair_id";
         $stmt = $this->pdo->prepare($sql);
@@ -41,7 +40,6 @@ class Repair {
         ]);
     }
 
-    // ✅ DELETE : Supprimer une demande de réparation
     public function deleteRepair($id) {
         $sql = "DELETE FROM repairs WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
@@ -58,16 +56,15 @@ class Repair {
         ]);
     }
     
-    // ✅ Récupérer les demandes de réparation d'un utilisateur spécifique
-public function getUserRepairs($user_id) {
-    $sql = "SELECT repairs.*, users.name AS client_name 
-            FROM repairs 
-            JOIN users ON repairs.user_id = users.id
-            WHERE repairs.user_id = :user_id";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
+    public function getUserRepairs($user_id) {
+        $sql = "SELECT repairs.*, users.name AS client_name, addresses.address, addresses.city, addresses.postal_code 
+                FROM repairs 
+                JOIN users ON repairs.user_id = users.id
+                JOIN addresses ON repairs.address_id = addresses.id
+                WHERE repairs.user_id = :user_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':user_id' => $user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
