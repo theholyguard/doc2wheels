@@ -1,34 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
-require_once '../src/User.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user = new User();
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $loggedInUser = $user->loginUser($email, $password);
-
-    if ($loggedInUser) {
-        $_SESSION['user_id'] = $loggedInUser['id'];
-        $_SESSION['role'] = $loggedInUser['role'];
-        $_SESSION['success_message'] = "Connexion réussie !";
-    
-        if ($_SESSION['role'] === 'technician') {
-            header("Location: dashboard.php"); // Redirige les techniciens vers le dashboard
-        } else {
-            header("Location: index.php"); // Redirige les clients vers l'accueil
-        }
-        exit();
-    } else {
-        $error = "Email ou mot de passe incorrect.";
-    }
-    
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -38,17 +7,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body class="bg-light">
     
-    <!-- ✅ Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.php">Doc2Wheels</a>
+            <a class="navbar-brand fw-bold" href="/">Doc2Wheels</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="register.php">Créer un compte</a>
+                        <a class="nav-link" href="register">Créer un compte</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Annuler</a>
+                        <a class="nav-link" href="/">Annuler</a>
                     </li>
                 </ul>
             </div>
