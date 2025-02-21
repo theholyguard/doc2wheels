@@ -47,7 +47,7 @@
                                     <p class="card-text"><strong>🛠 Statut :</strong> 
                                         <span class="badge bg-info"><?= ucfirst($repair['status']); ?></span>
                                     </p>
-                                    <p class="card-text"><strong>👤 Client :</strong> <?= htmlspecialchars($repair['client_name'] ?? $repair['technician_name']); ?></p>
+                                    <p class="card-text"><strong><?= $role === 'technician' ? '👤 Client' : '👤 Technicien'; ?> :</strong> <?= htmlspecialchars($repair['client_name'] ?? $repair['technician_name']); ?></p>
                                     <p class="card-text"><strong>🏍 Catégorie de moto :</strong> <?= htmlspecialchars($repair['vehicle_category']); ?></p>
                                     <p class="card-text"><strong>💰 Prix :</strong> <?= htmlspecialchars($repair['price']); ?> €</p>
                                     <p class="card-text"><strong>💬 Message :</strong> <?= htmlspecialchars($repair['message']); ?></p>

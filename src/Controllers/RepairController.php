@@ -37,7 +37,8 @@ class RepairController
             $message = $_POST['message'];
             $technicians = $service->findTechniciansByCategory($selectedCategory);
 
-            foreach ($technicians as &$technician) {
+            $technicianData = [];
+            foreach ($technicians as $technician) {
                 if (!isset($technician['address_id'])) {
                     error_log("Undefined address_id for technician ID: " . $technician['technician_id']);
                     continue;
@@ -54,8 +55,8 @@ class RepairController
                 $technician['price'] = $priceDetails['totalPrice'];
                 $technician['discount'] = $priceDetails['discount'];
                 $technician['average_rating'] = $repair->getTechnicianAverageRating($technician['technician_id']);
-                error_log("Technician Data: " . print_r($technician['price'], true));
-                error_log("Technician Data: " . print_r($priceDetails['totalPrice'], true));
+                $technicianData[] = $technician;
+                error_log("Technician Data: " . print_r($technician, true));
             }
 
             $selectedValues = [
@@ -63,7 +64,7 @@ class RepairController
                 'selectedAddressId' => $selectedAddressId,
                 'selectedVehicleCategoryId' => $selectedVehicleCategoryId,
                 'message' => $message,
-                'technicians' => $technicians
+                'technicians' => $technicianData
             ];
             error_log("Selected Values: " . print_r($selectedValues, true));
         }
