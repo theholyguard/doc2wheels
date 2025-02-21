@@ -37,25 +37,7 @@ class HomeController
             </div>
         </header>
 
-        <section class="container my-5">
-            <h2 class="text-center">🔍 Trouvez un service près de chez vous</h2>
-
-            <form method="GET" action="/search_results" class="row g-3 p-4 bg-white shadow rounded">
-                <div class="col-md-5">
-                    <label class="form-label">Service</label>
-                    <input type="text" id="service-search" name="query" class="form-control" placeholder="Ex: Vidange, Freinage, Électricité..." required list="services-list">
-                    <datalist id="services-list">
-                    </datalist>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Localisation</label>
-                    <input type="text" name="location" class="form-control" placeholder="Ville ou adresse..." required>
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-warning w-100">Rechercher</button>
-                </div>
-            </form>
-        </section>
+        
 
         <script>
         document.addEventListener("DOMContentLoaded", function() {
