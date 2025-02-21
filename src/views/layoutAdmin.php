@@ -23,7 +23,7 @@
 			</div>
 		</nav>
 
-<div class="">
+<div class="flex">
 <div class="sidebar">
     <ul class="sidebar-list">
             <li>
@@ -43,7 +43,10 @@
             </li>
     </ul>
 </div>
+
+<div class="flex flex-col">
     <?= $content ?>
+</div>
 </div>
 
 <footer class="bg-dark text-white text-center py-3">
