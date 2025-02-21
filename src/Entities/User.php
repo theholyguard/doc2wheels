@@ -13,6 +13,7 @@ class User {
 
     public function createUser($name, $email, $password, $role = 'client') {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $verificationToken = bin2hex(random_bytes(16));
         
         $checkEmail = "SELECT id FROM users WHERE email = :email";
         $stmt = $this->pdo->prepare($checkEmail);
@@ -22,16 +23,34 @@ class User {
             return "L'email est déjà utilisé.";
         }
 
-        $sql = "INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role)";
+        $sql = "INSERT INTO users (name, email, password, role, verification_token) VALUES (:name, :email, :password, :role, :verification_token)";
         $stmt = $this->pdo->prepare($sql);
         $success = $stmt->execute([
             ':name' => $name,
             ':email' => $email,
             ':password' => $hashedPassword,
-            ':role' => $role
+            ':role' => $role,
+            ':verification_token' => $verificationToken
         ]);
 
-        return $success ? true : "Erreur lors de l'inscription.";
+        if ($success) {
+            $this->sendVerificationEmail($email, $verificationToken);
+            return true;
+        } else {
+            return "Erreur lors de l'inscription.";
+        }
+    }
+
+    private function sendVerificationEmail($email, $token) {
+        $mail = new Mail();
+        $to = $email;
+        $subject = "Validation de votre compte Doc2Wheels";
+        $message = "Bonjour,\n\n" .
+                   "Merci de vous être inscrit sur Doc2Wheels. Veuillez cliquer sur le lien ci-dessous pour valider votre compte :\n\n" .
+                   "http://localhost/verify?token=$token\n\n" .
+                   "Merci,\nDoc2Wheels";
+
+        $mail->send($to, $subject, $message);
     }
 
     public function getUsers() {
@@ -67,11 +86,15 @@ class User {
             return "L'utilisateur avec cet email n'existe pas.";
         }
 
-        if (password_verify($password, $user['password'])) {
-            return $user;
-        } else {
+        if (!password_verify($password, $user['password'])) {
             return "Mot de passe incorrect.";
         }
+
+        if (!$user['is_verified']) {
+            return "Votre compte n'a pas encore été validé. Veuillez vérifier votre email.";
+        }
+
+        return $user;
     }
 
     public function getUserById($id) {
@@ -103,6 +126,33 @@ class User {
         $sql = "DELETE FROM addresses WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([':id' => $id]);
+    }
+
+    public function updateUserInfo($id, $name, $email, $password) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':password' => $hashedPassword,
+            ':id' => $id
+        ]);
+    }
+
+    public function verifyEmail($token) {
+        $sql = "SELECT id FROM users WHERE verification_token = :token";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':token' => $token]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $sql = "UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE id = :id";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([':id' => $user['id']]);
+        } else {
+            return "Token de validation invalide.";
+        }
     }
 }
 ?>

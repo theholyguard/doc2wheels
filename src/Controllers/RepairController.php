@@ -7,6 +7,7 @@ use App\Entities\Service;
 use App\Entities\Auth;
 use App\Entities\Database;
 use App\Entities\User;
+use App\Entities\Mail;
 
 class RepairController
 {
@@ -52,9 +53,10 @@ class RepairController
                 $priceDetails = $this->calculatePrice($selectedCategory, $selectedVehicleCategoryId, $selectedAddressId, $technician['address_id']);
                 $technician['price'] = $priceDetails['totalPrice'];
                 $technician['discount'] = $priceDetails['discount'];
+                $technician['average_rating'] = $repair->getTechnicianAverageRating($technician['technician_id']);
+                error_log("Technician Data: " . print_r($technician, true));
             }
 
-            // Pass the selected values to the view
             $selectedValues = [
                 'selectedCategory' => $selectedCategory,
                 'selectedAddressId' => $selectedAddressId,
@@ -62,6 +64,7 @@ class RepairController
                 'message' => $message,
                 'technicians' => $technicians
             ];
+            error_log("Selected Values: " . print_r($selectedValues, true));
         }
 
         if (isset($_GET['technician_id']) && isset($_GET['category']) && isset($_GET['address_id']) && isset($_GET['vehicle_category_id']) && isset($_GET['message'])) {
@@ -71,9 +74,10 @@ class RepairController
             $vehicle_category_id = $_GET['vehicle_category_id'];
             $message = $_GET['message'];
 
-            $price = $this->calculatePrice($category, $vehicle_category_id, $address_id, $technician_id);
+            $priceDetails = $this->calculatePrice($category, $vehicle_category_id, $address_id, $technician_id);
 
-            if ($repair->createRepair($user_id, $category, $address_id, $technician_id, $vehicle_category_id, $price, $message)) {
+            if ($repair->createRepair($user_id, $category, $address_id, $technician_id, $vehicle_category_id, $priceDetails['totalPrice'], $message)) {
+                $this->sendRepairCreatedEmail($user_id, $technician_id);
                 $_SESSION['success_message'] = "Votre demande a bien été envoyée !";
                 header("Location: /dashboard");
                 exit();
@@ -155,11 +159,6 @@ class RepairController
         session_start();
         Auth::redirectIfNotLoggedIn();
 
-        if ($_SESSION['role'] !== 'technician') {
-            header("Location: /dashboard");
-            exit();
-        }
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $repair_id = $_POST['repair_id'];
             $status = $_POST['status'];
@@ -167,9 +166,97 @@ class RepairController
             $repair = new Repair();
             $repair->updateRepairStatus($repair_id, $status);
 
+            $repairDetails = $repair->getRepairById($repair_id);
+            if ($status === 'annulé' || $status === 'terminé') {
+                $this->sendStatusUpdateEmailToTechnician($repairDetails);
+            } else if ($status === 'en cours' || $status === 'refusé') {
+                $this->sendStatusUpdateEmailToClient($repairDetails);
+            }
+
             header("Location: /dashboard");
             exit();
         }
+    }
+
+    public function addReview()
+    {
+        session_start();
+        Auth::redirectIfNotLoggedIn();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $repair_id = $_POST['repair_id'];
+            $rating = $_POST['rating'];
+            $comment = $_POST['comment'];
+
+            $repair = new Repair();
+            if ($repair->addReview($repair_id, $rating, $comment)) {
+                $repairDetails = $repair->getRepairById($repair_id);
+                $this->sendReviewEmailToTechnician($repairDetails);
+                $_SESSION['success_message'] = "Votre avis a été ajouté avec succès !";
+            } else {
+                $_SESSION['error_message'] = "Une erreur est survenue lors de l'ajout de l'avis.";
+            }
+
+            header("Location: /dashboard");
+            exit();
+        }
+    }
+
+    private function sendRepairCreatedEmail($user_id, $technician_id) {
+        $user = new User();
+        $client = $user->getUserById($user_id);
+        $technician = $user->getUserById($technician_id);
+
+        $mail = new Mail();
+        $to = $technician['email'];
+        $subject = "Nouvelle demande de réparation";
+        $message = "Bonjour " . $technician['name'] . ",\n\n" .
+                   "Une nouvelle demande de réparation a été créée par " . $client['name'] . ".\n\n" .
+                   "Merci,\nDoc2Wheels";
+
+        $mail->send($to, $subject, $message);
+    }
+
+    private function sendStatusUpdateEmailToTechnician($repairDetails) {
+        $user = new User();
+        $technician = $user->getUserById($repairDetails['technician_id']);
+
+        $mail = new Mail();
+        $to = $technician['email'];
+        $subject = "Mise à jour du statut de la réparation";
+        $message = "Bonjour " . $technician['name'] . ",\n\n" .
+                   "Le statut de la réparation pour " . $repairDetails['type_service'] . " a été mis à jour en " . $repairDetails['status'] . ".\n\n" .
+                   "Merci,\nDoc2Wheels";
+
+        $mail->send($to, $subject, $message);
+    }
+
+    private function sendStatusUpdateEmailToClient($repairDetails) {
+        $user = new User();
+        $client = $user->getUserById($repairDetails['user_id']);
+
+        $mail = new Mail();
+        $to = $client['email'];
+        $subject = "Mise à jour du statut de la réparation";
+        $message = "Bonjour " . $client['name'] . ",\n\n" .
+                   "Le statut de votre réparation pour " . $repairDetails['type_service'] . " a été mis à jour en " . $repairDetails['status'] . ".\n\n" .
+                   "Merci,\nDoc2Wheels";
+
+        $mail->send($to, $subject, $message);
+    }
+
+    private function sendReviewEmailToTechnician($repairDetails) {
+        $user = new User();
+        $technician = $user->getUserById($repairDetails['technician_id']);
+
+        $mail = new Mail();
+        $to = $technician['email'];
+        $subject = "Nouvel avis sur une réparation";
+        $message = "Bonjour " . $technician['name'] . ",\n\n" .
+                   "Un nouvel avis a été laissé pour la réparation " . $repairDetails['type_service'] . ".\n\n" .
+                   "Merci,\nDoc2Wheels";
+
+        $mail->send($to, $subject, $message);
     }
 }
 ?>

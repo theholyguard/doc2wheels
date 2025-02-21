@@ -60,7 +60,7 @@
             <div class="list-group">
                 <?php foreach ($technicians as $technician): ?>
                     <a href="/request_repair?technician_id=<?= $technician['technician_id']; ?>&category=<?= htmlspecialchars($selectedCategory); ?>&address_id=<?= htmlspecialchars($selectedAddressId); ?>&vehicle_category_id=<?= htmlspecialchars($selectedVehicleCategoryId); ?>&message=<?= htmlspecialchars($message); ?>" class="list-group-item list-group-item-action">
-                        <?= htmlspecialchars($technician['technician_name']); ?> - <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?> - Prix : <?= htmlspecialchars($technician['price']); ?> € (<?= $technician['discount'] * 100; ?>% appliqués lors de la sélection)
+                        <?= htmlspecialchars($technician['technician_name']); ?> - <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?> - Prix : <?= htmlspecialchars($technician['price']); ?> € (<?= $technician['discount'] * 100; ?>% appliqués lors de la sélection) - Note moyenne : <?= number_format($technician['average_rating'], 1); ?>/5
                     </a>
                 <?php endforeach; ?>
             </div>
