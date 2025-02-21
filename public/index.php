@@ -33,7 +33,6 @@ $router->post('/add_review', [RepairController::class, 'addReview']);
 $router->get('/dashboard', [DashboardController::class, 'index']);
 $router->post('/update_services', [ServiceController::class, 'updateServices']);
 $router->post('/add_service', [ServiceController::class, 'addService']);
-$router->get('/search_results', [SearchController::class, 'searchResults']);
 $router->post('/add_address', [DashboardController::class, 'addAddress']);
 $router->post('/delete_address', [DashboardController::class, 'deleteAddress']);
 $router->post('/update_user_info', [DashboardController::class, 'updateUserInfo']); 
