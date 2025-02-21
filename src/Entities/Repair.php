@@ -136,5 +136,11 @@ class Repair {
         $stmt->execute([':repair_id' => $repair_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function calculatePrice($servicePrice, $vehiclePrice, $discount) {
+        $totalPrice = $servicePrice + $vehiclePrice;
+        $totalPrice -= $totalPrice * $discount;
+        return $totalPrice;
+    }
 }
 ?>
