@@ -18,16 +18,16 @@ ob_start();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($history as $repair): ?>
+                <?php foreach ($history as $history): ?>
                     <tr>
-                        <td><?php echo $repair['id']; ?></td>
-                        <td><?php echo htmlspecialchars($repair['client_name']); ?></td>
-                        <td><?php echo htmlspecialchars($repair['technician_name']); ?></td>
-                        <td><?php echo htmlspecialchars($repair['type_service']); ?></td>
-                        <td><?php echo htmlspecialchars($repair['vehicle_name']); ?></td>
-                        <td><?php echo htmlspecialchars($repair['price']); ?> €</td>
-                        <td><?php echo htmlspecialchars($repair['status']); ?></td>
-                        <td><?php echo htmlspecialchars($repair['created_at']); ?></td>
+                        <td><?php echo $history['id']; ?></td>
+                        <td><?php echo htmlspecialchars($history['client_name']); ?></td>
+                        <td><?php echo htmlspecialchars($history['technician_name']); ?></td>
+                        <td><?php echo htmlspecialchars($history['type_service']); ?></td>
+                        <td><?php echo htmlspecialchars($history['vehicle_name']); ?></td>
+                        <td><?php echo htmlspecialchars($history['price']); ?> €</td>
+                        <td><?php echo htmlspecialchars($history['status']); ?></td>
+                        <td><?php echo htmlspecialchars($history['created_at']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
