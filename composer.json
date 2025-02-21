@@ -2,7 +2,9 @@
   "name": "doc2wheels/project",
   "description": "Doc2Wheels Project",
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "phpmailer/phpmailer": "^6.9",
+    "vlucas/phpdotenv": "^5.6"
   },
   "autoload": {
     "psr-4": {

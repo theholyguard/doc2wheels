@@ -125,5 +125,16 @@ class Repair {
         $stmt->execute([':repair_id' => $repair_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getRepairById($repair_id) {
+        $sql = "SELECT r.*, u.name AS client_name, u.email AS client_email, t.name AS technician_name, t.email AS technician_email
+                FROM repairs r
+                JOIN users u ON r.user_id = u.id
+                JOIN users t ON r.technician_id = t.id
+                WHERE r.id = :repair_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':repair_id' => $repair_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

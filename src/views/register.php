@@ -31,6 +31,8 @@
                         <h2 class="text-center">Inscription</h2>
                         <?php if (isset($error)): ?>
                             <div class="alert alert-danger"><?= $error ?></div>
+                        <?php elseif (isset($success)): ?>
+                            <div class="alert alert-success"><?= $success ?></div>
                         <?php endif; ?>
                         <form method="POST">
                             <div class="mb-3">
