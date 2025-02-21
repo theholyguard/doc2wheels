@@ -53,21 +53,6 @@ class Admin {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    public function getAllReviews()
-    {
-        $sql = "SELECT r.id, r.repair_id, r.rating, r.comment, r.created_at, 
-                    rp.type_service, u.name AS user_name 
-                FROM reviews r
-                JOIN repairs rp ON r.repair_id = rp.id
-                JOIN users u ON rp.user_id = u.id
-                ORDER BY r.created_at DESC";
-        
-        $stmt = $this->pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-
     public function getHistory()
     {
         $sql = "SELECT r.*, 
@@ -85,7 +70,21 @@ class Admin {
     }
     
 
-
+    public function getAllReviews()
+    {
+        $sql = "SELECT r.id, r.repair_id, r.rating, r.comment, r.created_at, 
+                    rp.type_service, u.name AS user_name 
+                FROM reviews r
+                JOIN repairs rp ON r.repair_id = rp.id
+                JOIN users u ON rp.user_id = u.id
+                ORDER BY r.created_at DESC";
+        
+        $stmt = $this->pdo->query($sql);
+        $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $reviews;
+    }
+    
 
 }
 ?>

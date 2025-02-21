@@ -44,7 +44,11 @@ class AdminController
     {
         return $this->performances->getHistory();
     }
-        
+
+    public function getAllReviews()
+    {
+        return $this->performances->getAllReviews();
+    }
 
     public function viewStatisticsPerformance()
     {
@@ -76,9 +80,9 @@ class AdminController
 
     public function viewStatisticsReview()
     {
-        $stats = $this->getStatistics();
-        extract($stats);
+        $reviews = $this->performances->getAllReviews();
         include __DIR__ . '/../views/admin_review.php';
     }
+    
 }
 ?>
