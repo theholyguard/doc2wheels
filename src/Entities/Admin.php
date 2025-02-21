@@ -84,6 +84,41 @@ class Admin {
     
         return $reviews;
     }
+
+    public function updateUser($id, $name, $email, $role) {
+        $user = $this->getUserById($id);
+    
+        $sql = "UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+    
+        $stmt->execute([
+            ':id' => $id,
+            ':name' => $name,
+            ':email' => $email,
+            ':role' => $role
+        ]);
+    }
+    
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+
+    public function deleteUser($id) {
+        $user = $this->performances->getUserById($id);
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->performances->deleteUser($id);
+            header("Location: /admin/user");
+            exit();
+        }
+    
+       include __DIR__ . '/../views/admin_delete_user.php';
+    }
+    
     
 
 }

@@ -5,23 +5,23 @@ ob_start();
 
 
 <h2>Liste de toutes les réparations</h2>
-<table border="1">
+<table>
     <tr>
-        <th>ID</th>
-        <th>Utilisateur</th>
-        <th>Type de service</th>
-        <th>Technicien</th>
-        <th>Statut</th>
-        <th>Date</th>
+        <th style="border: 1px solid #000; padding: 8px;">ID</th>
+        <th style="border: 1px solid #000; padding: 8px;">Utilisateur</th>
+        <th style="border: 1px solid #000; padding: 8px;">Type de service</th>
+        <th style="border: 1px solid #000; padding: 8px;">Technicien</th>
+        <th style="border: 1px solid #000; padding: 8px;">Statut</th>
+        <th style="border: 1px solid #000; padding: 8px;">Date</th>
     </tr>
     <?php foreach ($repairs as $repair): ?>
         <tr>
-            <td><?= htmlspecialchars($repair['id']) ?></td>
-            <td><?= htmlspecialchars($repair['user_id']) ?></td>
-            <td><?= htmlspecialchars($repair['type_service']) ?></td>
-            <td><?= htmlspecialchars($repair['technician_id']) ?></td>
-            <td><?= htmlspecialchars($repair['status']) ?></td>
-            <td><?= htmlspecialchars($repair['created_at']) ?></td>
+            <td style="border: 1px solid #000; padding: 8px;"><?= htmlspecialchars($repair['id']) ?></td>
+            <td style="border: 1px solid #000; padding: 8px;"><?= htmlspecialchars($repair['user_id']) ?></td>
+            <td style="border: 1px solid #000; padding: 8px;"><?= htmlspecialchars($repair['type_service']) ?></td>
+            <td style="border: 1px solid #000; padding: 8px;"><?= htmlspecialchars($repair['technician_id']) ?></td>
+            <td style="border: 1px solid #000; padding: 8px;"><?= htmlspecialchars($repair['status']) ?></td>
+            <td style="border: 1px solid #000; padding: 8px;"><?= htmlspecialchars($repair['created_at']) ?></td>
         </tr>
     <?php endforeach; ?>
 </table>

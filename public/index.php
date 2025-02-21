@@ -44,6 +44,7 @@ $router->get('/admin/repair', [AdminController::class, 'viewStatisticsRepair']);
 $router->get('/admin/history', [AdminController::class, 'viewStatisticsHistory']);
 $router->get('/admin/review', [AdminController::class, 'viewStatisticsReview']);
 $router->get('/verify', [AuthController::class, 'verifyEmail']);
+$router->post('/admin/user/edit/{id}', [AdminController::class, 'EditUser']);
 
 $response = $router->route($request);
 

@@ -83,6 +83,47 @@ class AdminController
         $reviews = $this->performances->getAllReviews();
         include __DIR__ . '/../views/admin_review.php';
     }
+
+    public function editUser($id) {
+        $user = $this->performances->getUserById($id);
+    
+        // Traiter la soumission du formulaire
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $role = $_POST['role'];
+    
+            try {
+                // Mettre à jour l'utilisateur
+                $this->performances->updateUser($id, $name, $email, $role);
+                header("Location: /admin/user"); // Rediriger vers la liste des utilisateurs
+                exit();
+            } catch (\Exception $e) {
+                // Gérer l'exception et afficher un message d'erreur
+                $errorMessage = $e->getMessage();
+            }
+        }
+    
+        include __DIR__ . '/../views/admin_edit_user.php';
+    }
+    
+    
+    public function viewDeleteUser($id) {
+        $user = $this->performances->getUserById($id);
+        if (!$user) {
+            die("Erreur : utilisateur non trouvé.");
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->performances->deleteUser($id);
+            header("Location: /users");
+            exit();
+        }
+    
+        include __DIR__ . '/../views/admin_delete_user.php';
+    }
+    
+    
     
 }
 ?>
