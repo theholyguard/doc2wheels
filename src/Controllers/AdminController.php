@@ -30,6 +30,22 @@ class AdminController
         ];
     }
 
+    private function getUsers()
+    {
+        return $this->performances->getAllUsers();
+    }
+
+    private function getRepairs()
+    {
+        return $this->performances->getAllRepairs();
+    }
+
+    public function getHistory()
+    {
+        return $this->performances->getHistory();
+    }
+        
+
     public function viewStatisticsPerformance()
     {
         $stats = $this->getStatistics();
@@ -39,24 +55,24 @@ class AdminController
 
     public function viewStatisticsUser()
     {
-        $stats = $this->getStatistics();
-        extract($stats);
+        $users = $this->getUsers();
         include __DIR__ . '/../views/admin_user.php';
     }
+    
 
     public function viewStatisticsRepair()
     {
-        $stats = $this->getStatistics();
-        extract($stats);
+        $repairs = $this->getRepairs();
         include __DIR__ . '/../views/admin_repair.php';
     }
 
+
     public function viewStatisticsHistory()
     {
-        $stats = $this->getStatistics();
-        extract($stats);
+        $history = $this->performances->getHistory();
         include __DIR__ . '/../views/admin_history.php';
     }
+        
 
     public function viewStatisticsReview()
     {

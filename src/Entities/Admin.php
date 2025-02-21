@@ -31,5 +31,61 @@ class Admin {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return (int)$result['total_users'];
     }
+
+    public function getAllUsers() {
+        $sql = "SELECT * FROM users";
+        $stmt = $this->pdo->query($sql);
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $users;
+    }
+
+    public function getAllRepairs()
+    {
+        $sql = "SELECT r.*, u.name AS client_name, t.name AS technician_name, v.name AS vehicle_name 
+                FROM repairs r
+                JOIN users u ON r.user_id = u.id
+                JOIN users t ON r.technician_id = t.id
+                JOIN vehicle_categories v ON r.vehicle_category_id = v.id
+                ORDER BY r.created_at DESC"; 
+
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getAllReviews()
+    {
+        $sql = "SELECT r.id, r.repair_id, r.rating, r.comment, r.created_at, 
+                    rp.type_service, u.name AS user_name 
+                FROM reviews r
+                JOIN repairs rp ON r.repair_id = rp.id
+                JOIN users u ON rp.user_id = u.id
+                ORDER BY r.created_at DESC";
+        
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getHistory()
+    {
+        $sql = "SELECT r.*, 
+                       u.name AS client_name, 
+                       t.name AS technician_name, 
+                       v.name AS vehicle_name 
+                FROM repairs r
+                JOIN users u ON r.user_id = u.id
+                JOIN users t ON r.technician_id = t.id
+                JOIN vehicle_categories v ON r.vehicle_category_id = v.id
+                ORDER BY r.created_at DESC"; 
+    
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+
+
 }
 ?>
