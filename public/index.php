@@ -43,6 +43,7 @@ $router->get('/admin/user', [AdminController::class, 'viewStatisticsUser']);
 $router->get('/admin/repair', [AdminController::class, 'viewStatisticsRepair']);
 $router->get('/admin/history', [AdminController::class, 'viewStatisticsHistory']);
 $router->get('/admin/review', [AdminController::class, 'viewStatisticsReview']);
+$router->post('/admin/user/edit/{id}', [AdminController::class, 'EditUser']);
 
 $response = $router->route($request);
 

@@ -8,27 +8,27 @@ ob_start();
 <table>
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Service</th>
-            <th>Auteur</th>
-            <th>Note</th>
-            <th>Commentaire</th>
-            <th>Date</th>
+            <th style="border: 1px solid #000; padding: 8px;">ID</th>
+            <th style="border: 1px solid #000; padding: 8px;">Service</th>
+            <th style="border: 1px solid #000; padding: 8px;">Auteur</th>
+            <th style="border: 1px solid #000; padding: 8px;">Note</th>
+            <th style="border: 1px solid #000; padding: 8px;">Commentaire</th>
+            <th style="border: 1px solid #000; padding: 8px;">Date</th>
         </tr>
     </thead>
     <tbody>
-        <?php if (!empty($reviews)): ?> <!-- Ajoutez cette condition -->
+        <?php if (!empty($reviews)): ?>
             <?php foreach ($reviews as $review): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($review['id']); ?></td>
-                    <td><?php echo htmlspecialchars($review['type_service']); ?></td>
-                    <td><?php echo htmlspecialchars($review['user_name']); ?></td>
-                    <td><?php echo htmlspecialchars($review['rating']); ?></td>
-                    <td><?php echo htmlspecialchars($review['comment']); ?></td>
-                    <td><?php echo htmlspecialchars($review['created_at']); ?></td>
+                    <td style="border: 1px solid #000; padding: 8px;"><?php echo htmlspecialchars($review['id']); ?></td>
+                    <td style="border: 1px solid #000; padding: 8px;"><?php echo htmlspecialchars($review['type_service']); ?></td>
+                    <td style="border: 1px solid #000; padding: 8px;"><?php echo htmlspecialchars($review['user_name']); ?></td>
+                    <td style="border: 1px solid #000; padding: 8px;"><?php echo htmlspecialchars($review['rating']); ?></td>
+                    <td style="border: 1px solid #000; padding: 8px;"><?php echo htmlspecialchars($review['comment']); ?></td>
+                    <td style="border: 1px solid #000; padding: 8px;"><?php echo htmlspecialchars($review['created_at']); ?></td>
                 </tr>
             <?php endforeach; ?>
-        <?php else: ?> <!-- Ajoutez cette partie pour un message vide -->
+        <?php else: ?>
             <tr>
                 <td colspan="6">Aucun avis disponible.</td>
             </tr>
