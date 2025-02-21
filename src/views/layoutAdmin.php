@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? "Doc2Wheels" ?></title>
     <link rel="stylesheet" href="../assets/css/main.css">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 <body>
 
@@ -24,29 +23,24 @@
 			</div>
 		</nav>
 
-<div>
+<div class="">
 <div class="sidebar">
     <ul class="sidebar-list">
-        <a href="#">
-            <li>Performances</li>
-        </a>
-        
-        <a href="">
-            <li>Gestion utilisateurs</li>
-        </a>
-        
-        <a href="">
-        <li>Gestion interventions</li>
-        </a>
-        
-        <a href="">
-        <li>Historique global</li>
-        </a>
-        
-        <a href="">
-        <li>Retour clients</li>
-        </a>
-
+            <li>
+                <a href="performance">Performances</a>
+            </li>
+            <li>
+                <a href="user">Gestion utilisateurs</a>
+            </li>
+            <li>
+                <a href="repair">Gestion interventions</a>
+            </li>
+            <li>
+                <a href="history">Historique</a>
+            </li>
+            <li>
+                <a href="review">Avis client</a>
+            </li>
     </ul>
 </div>
     <?= $content ?>
