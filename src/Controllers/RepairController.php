@@ -37,7 +37,8 @@ class RepairController
             $message = $_POST['message'];
             $technicians = $service->findTechniciansByCategory($selectedCategory);
 
-            foreach ($technicians as &$technician) {
+            $technicianData = [];
+            foreach ($technicians as $technician) {
                 if (!isset($technician['address_id'])) {
                     error_log("Undefined address_id for technician ID: " . $technician['technician_id']);
                     continue;
@@ -54,6 +55,7 @@ class RepairController
                 $technician['price'] = $priceDetails['totalPrice'];
                 $technician['discount'] = $priceDetails['discount'];
                 $technician['average_rating'] = $repair->getTechnicianAverageRating($technician['technician_id']);
+                $technicianData[] = $technician;
                 error_log("Technician Data: " . print_r($technician, true));
             }
 
@@ -62,21 +64,20 @@ class RepairController
                 'selectedAddressId' => $selectedAddressId,
                 'selectedVehicleCategoryId' => $selectedVehicleCategoryId,
                 'message' => $message,
-                'technicians' => $technicians
+                'technicians' => $technicianData
             ];
             error_log("Selected Values: " . print_r($selectedValues, true));
         }
 
-        if (isset($_GET['technician_id']) && isset($_GET['category']) && isset($_GET['address_id']) && isset($_GET['vehicle_category_id']) && isset($_GET['message'])) {
+        if (isset($_GET['technician_id']) && isset($_GET['category']) && isset($_GET['address_id']) && isset($_GET['vehicle_category_id']) && isset($_GET['message']) && isset($_GET['price'])) {
             $technician_id = $_GET['technician_id'];
             $category = $_GET['category'];
             $address_id = $_GET['address_id'];
             $vehicle_category_id = $_GET['vehicle_category_id'];
             $message = $_GET['message'];
+            $price = $_GET['price'];
 
-            $priceDetails = $this->calculatePrice($category, $vehicle_category_id, $address_id, $technician_id);
-
-            if ($repair->createRepair($user_id, $category, $address_id, $technician_id, $vehicle_category_id, $priceDetails['totalPrice'], $message)) {
+            if ($repair->createRepair($user_id, $category, $address_id, $technician_id, $vehicle_category_id, $price, $message)) {
                 $this->sendRepairCreatedEmail($user_id, $technician_id);
                 $_SESSION['success_message'] = "Votre demande a bien été envoyée !";
                 header("Location: /dashboard");

@@ -10,6 +10,7 @@
     <div class="container my-5">
         <h2 class="text-center">📩 Demande de Réparation</h2>
 
+        <!-- ✅ Message d'erreur -->
         <?php if (isset($error)): ?>
             <div class="alert alert-danger text-center"><?= $error ?></div>
         <?php endif; ?>
@@ -20,9 +21,7 @@
                 <select name="category" class="form-select" required>
                     <option value="">-- Sélectionnez une catégorie --</option>
                     <?php foreach ($allServicesByCategory as $category => $services): ?>
-                        <option value="<?= htmlspecialchars($category); ?>">
-                            <?= htmlspecialchars($category); ?>
-                        </option>
+                        <option value="<?= htmlspecialchars($category); ?>"><?= htmlspecialchars($category); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -31,38 +30,51 @@
                 <select name="address_id" class="form-select" required>
                     <option value="">-- Sélectionnez une adresse --</option>
                     <?php foreach ($userAddresses as $address): ?>
-                        <option value="<?= $address['id']; ?>">
-                            <?= htmlspecialchars($address['address']) . ', ' . htmlspecialchars($address['city']) . ' ' . htmlspecialchars($address['postal_code']); ?>
-                        </option>
+                        <option value="<?= htmlspecialchars($address['id']); ?>"><?= htmlspecialchars($address['address']) . ', ' . htmlspecialchars($address['city']) . ' ' . htmlspecialchars($address['postal_code']); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Catégorie de moto :</label>
+                <label class="form-label">Catégorie de véhicule :</label>
                 <select name="vehicle_category_id" class="form-select" required>
-                    <option value="">-- Sélectionnez une catégorie de moto --</option>
+                    <option value="">-- Sélectionnez une catégorie de véhicule --</option>
                     <?php foreach ($vehicleCategories as $category): ?>
-                        <option value="<?= $category['id']; ?>">
-                            <?= htmlspecialchars($category['name']); ?>
-                        </option>
+                        <option value="<?= htmlspecialchars($category['id']); ?>"><?= htmlspecialchars($category['name']); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Message :</label>
-                <textarea name="message" class="form-control" rows="3"></textarea>
+                <textarea name="message" class="form-control" rows="3" placeholder="Message"></textarea>
             </div>
-            <button type="submit" class="btn btn-success w-100">Rechercher Techniciens</button>
+            <button type="submit" class="btn btn-primary">Rechercher des techniciens</button>
         </form>
 
-        <?php if (isset($technicians)): ?>
-            <h3 class="text-center mt-5">Techniciens disponibles</h3>
-            <div class="list-group">
-                <?php foreach ($technicians as $technician): ?>
-                    <a href="/request_repair?technician_id=<?= $technician['technician_id']; ?>&category=<?= htmlspecialchars($selectedCategory); ?>&address_id=<?= htmlspecialchars($selectedAddressId); ?>&vehicle_category_id=<?= htmlspecialchars($selectedVehicleCategoryId); ?>&message=<?= htmlspecialchars($message); ?>" class="list-group-item list-group-item-action">
-                        <?= htmlspecialchars($technician['technician_name']); ?> - <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?> - Prix : <?= htmlspecialchars($technician['price']); ?> € (<?= $technician['discount'] * 100; ?>% appliqués lors de la sélection) - Note moyenne : <?= number_format($technician['average_rating'], 1); ?>/5
-                    </a>
-                <?php endforeach; ?>
+        <?php if (isset($selectedValues)): ?>
+            <div class="mt-5">
+                <h3 class="text-center">Techniciens disponibles</h3>
+                <?php if (empty($selectedValues['technicians'])): ?>
+                    <p class="text-center text-muted">Aucun technicien disponible pour cette catégorie de service.</p>
+                <?php else: ?>
+                    <div class="row">
+                        <?php foreach ($selectedValues['technicians'] as $technician): 
+                            error_log(print_r($technician, true));
+                            ?>
+                            <div class="col-md-6">
+                                <div class="card shadow-sm mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">🔧 <?= htmlspecialchars($technician['technician_name']); ?></h5>
+                                        <p class="card-text"><strong>📍 Adresse :</strong> <?= htmlspecialchars($technician['address']) . ', ' . htmlspecialchars($technician['city']) . ' ' . htmlspecialchars($technician['postal_code']); ?></p>
+                                        <p class="card-text"><strong>💰 Prix :</strong> <?= htmlspecialchars($technician['price']); ?> €</p>
+                                        <p class="card-text"><strong>💸 Remise :</strong> <?= htmlspecialchars($technician['discount'] * 100); ?> %</p>
+                                        <p class="card-text"><strong>⭐ Note moyenne :</strong> <?= number_format($technician['average_rating'], 1); ?>/5</p>
+                                        <a href="/request_repair?technician_id=<?= htmlspecialchars($technician['technician_id']); ?>&category=<?= htmlspecialchars($selectedValues['selectedCategory']); ?>&address_id=<?= htmlspecialchars($selectedValues['selectedAddressId']); ?>&vehicle_category_id=<?= htmlspecialchars($selectedValues['selectedVehicleCategoryId']); ?>&message=<?= htmlspecialchars($selectedValues['message']); ?>&price=<?= htmlspecialchars($technician['price']); ?>" class="btn btn-success">Choisir ce technicien</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
     </div>
