@@ -106,15 +106,12 @@ class Admin {
     
 
     public function deleteUser($id) {
-        $user = $this->performances->getUserById($id);
+        $sql = "DELETE FROM users WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
     
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->performances->deleteUser($id);
-            header("Location: /admin/user");
-            exit();
-        }
-    
-       include __DIR__ . '/../views/admin_delete_user.php';
+        $stmt->execute([
+            ':id' => $id
+        ]);
     }
     
     

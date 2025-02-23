@@ -40,6 +40,7 @@ $router->get('/admin/', [AdminController::class, 'viewStatisticsPerformance']);
 $router->get('/admin/performance', [AdminController::class, 'viewStatisticsPerformance']);
 $router->get('/admin/user', [AdminController::class, 'viewStatisticsUser']);
 $router->post('/admin/user', [AdminController::class, 'editUser']);
+$router->post('/admin/user/delete', [AdminController::class, 'deleteUser']);
 $router->get('/admin/repair', [AdminController::class, 'viewStatisticsRepair']);
 $router->get('/admin/history', [AdminController::class, 'viewStatisticsHistory']);
 $router->get('/admin/review', [AdminController::class, 'viewStatisticsReview']);

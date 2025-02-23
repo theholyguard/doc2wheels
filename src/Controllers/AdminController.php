@@ -85,8 +85,6 @@ class AdminController
     }
 
     public function editUser() {
-
-        $user = $this->performances->getUserById($id);
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
             $name = $_POST['name'];
@@ -99,43 +97,13 @@ class AdminController
 
     }
     
-
-    // public function editUser($id) {
-    //     $user = $this->performances->getUserById($id);
-        
-    //     if (!$user) {
-    //         die("Erreur : utilisateur non trouvé.");
-    //     }
-    
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $name = $_POST['name'];
-    //         $email = $_POST['email'];
-    //         $role = $_POST['role'];
-    
-    //         $this->performances->updateUser($id, $name, $email, $role);
-    
-    //         // Redirection après mise à jour
-    //         header("Location: /admin/user");
-    //         exit();
-    //     }
-    
-    //     include __DIR__ . '/../views/admin_edit_user.php';
-    // }
-    
-    
-    public function viewDeleteUser($id) {
-        $user = $this->performances->getUserById($id);
-        if (!$user) {
-            die("Erreur : utilisateur non trouvé.");
-        }
-    
+    public function deleteUser() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
             $this->performances->deleteUser($id);
-            header("Location: /users");
+            header("Location: /admin/user");
             exit();
         }
-    
-        include __DIR__ . '/../views/admin_delete_user.php';
     }
     
     

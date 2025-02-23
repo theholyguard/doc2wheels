@@ -49,8 +49,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </td>
                     <td style="border: 1px solid #000; padding: 8px;">
                         <button type="submit">Mettre à jour</button>
+                        </form>
+                        <form action="/admin/user/delete" method="POST">
+                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                            <button type="submit">Supprimer</button>
+                        </form>
                     </td>
-                </form>
             </tr>
         <?php endforeach; ?>
     </tbody>
