@@ -41,7 +41,16 @@ $router->get('/admin/performance', [AdminController::class, 'viewStatisticsPerfo
 $router->get('/admin/user', [AdminController::class, 'viewStatisticsUser']);
 $router->post('/admin/user', [AdminController::class, 'editUser']);
 $router->post('/admin/user/delete', [AdminController::class, 'deleteUser']);
-$router->get('/admin/repair', [AdminController::class, 'viewStatisticsRepair']);
+
+
+
+$router->get('/admin/service', [AdminController::class, 'viewStatisticsService']);
+$router->post('/admin/service', [AdminController::class, 'editService']);
+$router->get('/admin/service/create', [AdminController::class, 'createService']);
+$router->post('/admin/service/create', [AdminController::class, 'createService']);
+$router->post('/admin/service/delete', [AdminController::class, 'deleteService']);
+
+
 $router->get('/admin/history', [AdminController::class, 'viewStatisticsHistory']);
 $router->get('/admin/review', [AdminController::class, 'viewStatisticsReview']);
 $router->get('/verify', [AuthController::class, 'verifyEmail']);

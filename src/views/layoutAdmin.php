@@ -33,7 +33,7 @@
                 <a href="user">Gestion utilisateurs</a>
             </li>
             <li>
-                <a href="repair">Gestion interventions</a>
+                <a href="service">Gestion services</a>
             </li>
             <li>
                 <a href="history">Historique</a>
