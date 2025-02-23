@@ -15,7 +15,7 @@ class AdminController
         Auth::redirectIfNotLoggedIn();
 
         if ($_SESSION['role'] !== 'admin') {
-            header("Location: /dashboard");
+            header("Location: /");
             exit();
         }
 
