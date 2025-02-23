@@ -84,28 +84,43 @@ class AdminController
         include __DIR__ . '/../views/admin_review.php';
     }
 
-    public function editUser($id) {
+    public function editUser() {
+
         $user = $this->performances->getUserById($id);
-    
-        // Traiter la soumission du formulaire
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
             $name = $_POST['name'];
             $email = $_POST['email'];
             $role = $_POST['role'];
-    
-            try {
-                // Mettre à jour l'utilisateur
-                $this->performances->updateUser($id, $name, $email, $role);
-                header("Location: /admin/user"); // Rediriger vers la liste des utilisateurs
-                exit();
-            } catch (\Exception $e) {
-                // Gérer l'exception et afficher un message d'erreur
-                $errorMessage = $e->getMessage();
-            }
+            $this->performances->updateUser($id, $name, $email, $role);
+            header("Location: /admin/user");
+            exit();
         }
-    
-        include __DIR__ . '/../views/admin_edit_user.php';
+
     }
+    
+
+    // public function editUser($id) {
+    //     $user = $this->performances->getUserById($id);
+        
+    //     if (!$user) {
+    //         die("Erreur : utilisateur non trouvé.");
+    //     }
+    
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         $name = $_POST['name'];
+    //         $email = $_POST['email'];
+    //         $role = $_POST['role'];
+    
+    //         $this->performances->updateUser($id, $name, $email, $role);
+    
+    //         // Redirection après mise à jour
+    //         header("Location: /admin/user");
+    //         exit();
+    //     }
+    
+    //     include __DIR__ . '/../views/admin_edit_user.php';
+    // }
     
     
     public function viewDeleteUser($id) {

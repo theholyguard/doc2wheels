@@ -85,9 +85,7 @@ class Admin {
         return $reviews;
     }
 
-    public function updateUser($id, $name, $email, $role) {
-        $user = $this->getUserById($id);
-    
+    public function updateUser($id, $name, $email, $role) {    
         $sql = "UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
     
