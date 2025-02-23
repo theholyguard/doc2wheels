@@ -5,7 +5,7 @@ ob_start();
 
 
 <h2>Liste de toutes les réparations</h2>
-<a href="service/create">creer</a>
+<a href="service/create">Ajouter un service</a>
 <table>
     <tr>
         <td>Catégorie</td>

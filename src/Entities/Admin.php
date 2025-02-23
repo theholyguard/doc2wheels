@@ -87,6 +87,17 @@ class Admin
         return $exec->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function createService($category, $price)
+    {
+        $sql = "INSERT INTO services (category, price) VALUES (:category, :price)";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':category' => $category,
+            ':price' => $price
+        ]);
+    }
+
     public function editService($id, $category, $price)
     {
         $sql = "UPDATE services SET category = :category, price = :price WHERE id = :id";

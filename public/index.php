@@ -35,7 +35,7 @@ $router->post('/update_services', [ServiceController::class, 'updateServices']);
 $router->post('/add_service', [ServiceController::class, 'addService']);
 $router->post('/add_address', [DashboardController::class, 'addAddress']);
 $router->post('/delete_address', [DashboardController::class, 'deleteAddress']);
-$router->post('/update_user_info', [DashboardController::class, 'updateUserInfo']); 
+$router->post('/update_user_info', [DashboardController::class, 'updateUserInfo']);
 $router->get('/admin/', [AdminController::class, 'viewStatisticsPerformance']);
 $router->get('/admin/performance', [AdminController::class, 'viewStatisticsPerformance']);
 $router->get('/admin/user', [AdminController::class, 'viewStatisticsUser']);

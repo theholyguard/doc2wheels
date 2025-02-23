@@ -96,7 +96,9 @@ class AdminController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $this->performances->createService();
+            $category = $_POST['category'];
+            $price = $_POST['price'];
+            $this->performances->createService($category, $price);
             header("Location: /admin/service");
             exit();
         }
@@ -184,7 +186,7 @@ class AdminController
         }
     }
 
-    //Avisclient   
+    //Avisclient
 
 }
 ?>
