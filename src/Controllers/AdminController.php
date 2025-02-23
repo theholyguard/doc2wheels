@@ -162,26 +162,12 @@ class AdminController
         include __DIR__ . '/../views/admin_review.php';
     }
 
-    public function editReview()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $role = $_POST['role'];
-            $this->performances->updateUser($id, $name, $email, $role);
-            header("Location: /admin/user");
-            exit();
-        }
-
-    }
-
     public function deleteReview()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
-            $this->performances->deleteUser($id);
-            header("Location: /admin/user");
+            $this->performances->deleteReview($id);
+            header("Location: /admin/review");
             exit();
         }
     }

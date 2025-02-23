@@ -159,6 +159,16 @@ class Admin
         return $reviews;
     }
 
+    public function deleteReview($id)
+    {
+        $sql = "DELETE FROM reviews WHERE id = :id";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':id' => $id
+        ]);
+    }
+
     //------------------Review
 
 }
