@@ -13,6 +13,9 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <?php if (isset($_SESSION['user_id'])): ?>
+                        <?php if ($_SESSION['role'] === 'admin'): ?>
+                            <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+                        <?php endif; ?>
                         <li class="nav-item"><a class="nav-link" href="/dashboard">Utilisateur</a></li>
                         <li class="nav-item"><a class="nav-link" href="/logout">Déconnexion</a></li>
                     <?php else: ?>

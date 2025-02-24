@@ -33,12 +33,23 @@ $router->post('/add_review', [RepairController::class, 'addReview']);
 $router->get('/dashboard', [DashboardController::class, 'index']);
 $router->post('/update_services', [ServiceController::class, 'updateServices']);
 $router->post('/add_service', [ServiceController::class, 'addService']);
-$router->get('/search_results', [SearchController::class, 'searchResults']);
 $router->post('/add_address', [DashboardController::class, 'addAddress']);
 $router->post('/delete_address', [DashboardController::class, 'deleteAddress']);
-$router->post('/update_user_info', [DashboardController::class, 'updateUserInfo']); 
+$router->post('/update_user_info', [DashboardController::class, 'updateUserInfo']);
+$router->get('/admin/', [AdminController::class, 'viewStatisticsPerformance']);
+$router->get('/admin/performance', [AdminController::class, 'viewStatisticsPerformance']);
+$router->get('/admin/user', [AdminController::class, 'viewStatisticsUser']);
+$router->post('/admin/user', [AdminController::class, 'editUser']);
+$router->post('/admin/user/delete', [AdminController::class, 'deleteUser']);
+$router->get('/admin/service', [AdminController::class, 'viewStatisticsService']);
+$router->post('/admin/service', [AdminController::class, 'editService']);
+$router->get('/admin/service/create', [AdminController::class, 'createService']);
+$router->post('/admin/service/create', [AdminController::class, 'createService']);
+$router->post('/admin/service/delete', [AdminController::class, 'deleteService']);
+$router->get('/admin/history', [AdminController::class, 'viewStatisticsHistory']);
+$router->get('/admin/review', [AdminController::class, 'viewStatisticsReview']);
+$router->post('/admin/review/delete', [AdminController::class, 'deleteReview']);
 $router->get('/verify', [AuthController::class, 'verifyEmail']);
-$router->get('/admin/performance', [AdminController::class, 'viewStatistics']);
 
 $response = $router->route($request);
 
