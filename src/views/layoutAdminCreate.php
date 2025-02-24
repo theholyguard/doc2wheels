@@ -11,7 +11,7 @@
 <body>
 
     <nav class="navbar">
-        <div class="flex-space-between">
+        <div class="container flex-space-between align-items-center">
             <a class="navbar-brand" href="/">Doc2Wheels</a>
             <ul class="navbar-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
