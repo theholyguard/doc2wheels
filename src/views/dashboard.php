@@ -1,3 +1,6 @@
+<?php
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,26 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">Doc2Wheels</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <?php if ($_SESSION['role'] === 'admin'): ?>
-                            <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
-                        <?php endif; ?>
-                        <li class="nav-item"><a class="nav-link" href="/dashboard">Utilisateur</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout">Déconnexion</a></li>
-                    <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="/login">Connexion</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/register">Inscription</a></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <div class="container my-4">
         <h2 class="text-center">Tableau de bord</h2>
@@ -208,3 +191,8 @@
 
 </body>
 </html>
+
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../views/layout.php';
+?>

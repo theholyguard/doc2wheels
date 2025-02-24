@@ -1,3 +1,6 @@
+<?php
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,21 +11,6 @@
 <body class="bg-light">
     
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">Doc2Wheels</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="register">Créer un compte</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Annuler</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="container">

@@ -1,27 +1,16 @@
+<?php
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Inscription</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">Doc2Wheels</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login">Déjà inscrit ?</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Annuler</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<body class="bg-light">
 
     <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="container">
@@ -45,7 +34,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Mot de passe</label>
-                                <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                                <input type="password" name="password" class="form-control" placeholder="Mot de passe"
+                                    required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Rôle</label>
@@ -64,4 +54,10 @@
     </div>
 
 </body>
+
 </html>
+
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../views/layout.php';
+?>

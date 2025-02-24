@@ -1,13 +1,7 @@
 <?php
-if (!isset($users)) {
-    die("Erreur : les utilisateurs ne sont pas chargés correctement.");
-}
-$title = "Gestion des utilisateurs";
 ob_start();
 
-
-
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_GET['id'];
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -27,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th style="border: 1px solid #000; padding: 8px;">Email</th>
             <th style="border: 1px solid #000; padding: 8px;">Rôle</th>
             <th style="border: 1px solid #000; padding: 8px;">Actions</th>
-       </tr>
+        </tr>
     </thead>
     <tbody>
         <?php foreach ($users as $user): ?>
@@ -43,18 +37,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <td style="border: 1px solid #000; padding: 8px;">
                         <select name="role" required>
                             <option value="admin" <?= $user['role'] === 'admin' ? 'selected' : '' ?>>Administrateur</option>
-                            <option value="technician" <?= $user['role'] === 'technician' ? 'selected' : '' ?>>Technicien</option>
+                            <option value="technician" <?= $user['role'] === 'technician' ? 'selected' : '' ?>>Technicien
+                            </option>
                             <option value="client" <?= $user['role'] === 'client' ? 'selected' : '' ?>>Client</option>
                         </select>
                     </td>
                     <td style="border: 1px solid #000; padding: 8px;">
                         <button type="submit">Mettre à jour</button>
-                        </form>
-                        <form action="/admin/user/delete" method="POST">
-                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                            <button type="submit">Supprimer</button>
-                        </form>
-                    </td>
+                </form>
+                <form action="/admin/user/delete" method="POST">
+                    <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                    <button type="submit">Supprimer</button>
+                </form>
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
