@@ -740,6 +740,29 @@
     border-color: var(--red);
   }
 }
+@layer components {
+  .alert {
+    padding: 1rem;
+    border-radius: var(--radius-2);
+    margin: 1rem 0;
+  }
+  .alert-danger {
+    background-color: var(--red);
+    color: var(--white);
+  }
+  .alert-success {
+    background-color: var(--l-gold);
+    color: var(--white);
+  }
+}
+@layer components {
+  .card {
+    border: 1px solid var(--l-grey);
+    border-radius: var(--radius-2);
+    padding: 1rem;
+    background-color: var(--white);
+  }
+}
 .grid {
   display: grid;
   gap: 1rem;
@@ -954,8 +977,6 @@
 }
 .flex-space-between {
   display: flex;
-  margin-left: 2rem;
-  margin-right: 2rem;
   justify-content: space-between;
   align-items: center;
 }
