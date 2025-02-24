@@ -4,54 +4,125 @@ namespace App\Entities;
 
 use PDO;
 
-class Admin {
+class Admin
+{
     private $pdo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->pdo = Database::getInstance()->getConnection();
     }
 
-    public function getTotalRepairs() {
+    //------------------Performance
+
+    public function getTotalRepairs()
+    {
         $sql = "SELECT COUNT(*) AS total_repairs FROM repairs";
-        $stmt = $this->pdo->query($sql);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return (int)$result['total_repairs'];
+        $exec = $this->pdo->query($sql);
+        $result = $exec->fetch(PDO::FETCH_ASSOC);
+        return (int) $result['total_repairs'];
     }
 
-    public function getTotalTechnicians() {
+    public function getTotalTechnicians()
+    {
         $sql = "SELECT COUNT(*) AS total_technicians FROM users WHERE role = 'technician'";
-        $stmt = $this->pdo->query($sql);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return (int)$result['total_technicians'];
+        $exec = $this->pdo->query($sql);
+        $result = $exec->fetch(PDO::FETCH_ASSOC);
+        return (int) $result['total_technicians'];
     }
 
-    public function getTotalUsers() {
+    public function getTotalUsers()
+    {
         $sql = "SELECT COUNT(*) AS total_users FROM users";
-        $stmt = $this->pdo->query($sql);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return (int)$result['total_users'];
+        $exec = $this->pdo->query($sql);
+        $result = $exec->fetch(PDO::FETCH_ASSOC);
+        return (int) $result['total_users'];
     }
 
-    public function getAllUsers() {
+    //------------------Performance
+
+    //------------------User
+
+    public function getAllUsers()
+    {
         $sql = "SELECT * FROM users";
-        $stmt = $this->pdo->query($sql);
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+        $exec = $this->pdo->query($sql);
+        $users = $exec->fetchAll(PDO::FETCH_ASSOC);
+
         return $users;
     }
 
-    public function getAllRepairs()
+    public function updateUser($id, $name, $email, $role)
     {
-        $sql = "SELECT r.*, u.name AS client_name, t.name AS technician_name, v.name AS vehicle_name 
-                FROM repairs r
-                JOIN users u ON r.user_id = u.id
-                JOIN users t ON r.technician_id = t.id
-                JOIN vehicle_categories v ON r.vehicle_category_id = v.id
-                ORDER BY r.created_at DESC"; 
+        $sql = "UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id";
+        $exec = $this->pdo->prepare($sql);
 
-        $stmt = $this->pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $exec->execute([
+            ':id' => $id,
+            ':name' => $name,
+            ':email' => $email,
+            ':role' => $role
+        ]);
     }
+
+    public function deleteUser($id)
+    {
+        $sql = "DELETE FROM users WHERE id = :id";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':id' => $id
+        ]);
+    }
+
+    //------------------User
+
+    //------------------Service
+
+    public function getAllServices()
+    {
+        $sql = "SELECT * FROM services";
+
+        $exec = $this->pdo->query($sql);
+        return $exec->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createService($category, $price)
+    {
+        $sql = "INSERT INTO services (category, price) VALUES (:category, :price)";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':category' => $category,
+            ':price' => $price
+        ]);
+    }
+
+    public function editService($id, $category, $price)
+    {
+        $sql = "UPDATE services SET category = :category, price = :price WHERE id = :id";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':id' => $id,
+            ':category' => $category,
+            ':price' => $price
+        ]);
+    }
+
+    public function deleteService($id)
+    {
+        $sql = "DELETE FROM services WHERE id = :id";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':id' => $id
+        ]);
+    }
+
+    //------------------Service
+
+    //------------------History
 
     public function getHistory()
     {
@@ -63,12 +134,15 @@ class Admin {
                 JOIN users u ON r.user_id = u.id
                 JOIN users t ON r.technician_id = t.id
                 JOIN vehicle_categories v ON r.vehicle_category_id = v.id
-                ORDER BY r.created_at DESC"; 
-    
-        $stmt = $this->pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                ORDER BY r.created_at DESC";
+
+        $exec = $this->pdo->query($sql);
+        return $exec->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+    //------------------History
+
+    //------------------Review
 
     public function getAllReviews()
     {
@@ -78,48 +152,24 @@ class Admin {
                 JOIN repairs rp ON r.repair_id = rp.id
                 JOIN users u ON rp.user_id = u.id
                 ORDER BY r.created_at DESC";
-        
-        $stmt = $this->pdo->query($sql);
-        $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
+        $exec = $this->pdo->query($sql);
+        $reviews = $exec->fetchAll(PDO::FETCH_ASSOC);
+
         return $reviews;
     }
 
-    public function updateUser($id, $name, $email, $role) {
-        $user = $this->getUserById($id);
-    
-        $sql = "UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id";
-        $stmt = $this->pdo->prepare($sql);
-    
-        $stmt->execute([
-            ':id' => $id,
-            ':name' => $name,
-            ':email' => $email,
-            ':role' => $role
+    public function deleteReview($id)
+    {
+        $sql = "DELETE FROM reviews WHERE id = :id";
+        $exec = $this->pdo->prepare($sql);
+
+        $exec->execute([
+            ':id' => $id
         ]);
     }
-    
-    public function getUserById($id) {
-        $sql = "SELECT * FROM users WHERE id = :id";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    
 
-    public function deleteUser($id) {
-        $user = $this->performances->getUserById($id);
-    
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->performances->deleteUser($id);
-            header("Location: /admin/user");
-            exit();
-        }
-    
-       include __DIR__ . '/../views/admin_delete_user.php';
-    }
-    
-    
+    //------------------Review
 
 }
 ?>
